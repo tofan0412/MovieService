@@ -62,15 +62,12 @@ MIDDLEWARE = [
 ]
 
 # 1. 특정 Origin만 선택적으로 허용
-# CORS_ALLOWED_ORIGINS = [
-#     "https://example.com",
-#     "https://sub.example.com",
-#     "http://localhost:8080",
-#     "http://127.0.0.1:9000"
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+]
 
 # 2. 모든 Origin 허용
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
 
 ROOT_URLCONF = 'server.urls'
