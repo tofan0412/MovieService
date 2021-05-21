@@ -17,5 +17,3 @@ for i in range(1,6):
     
 file_path = './movies.json'
 json.dump(result, file_path)
-
-
