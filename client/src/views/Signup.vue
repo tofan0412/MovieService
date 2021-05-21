@@ -5,8 +5,10 @@
     <br>
     <label for="password">비밀번호</label>
     <input type="text" name="password" id="password" v-model="credentials.password">
+    <br>
     <label for="password">비밀번호 확인</label>
     <input type="text" name="passwordConfirmation" id="passwordConfirmation" v-model="credentials.passwordConfirmation">
+    <br>
     <button @click="onSignup">회원가입</button>
   </div>
 </template>

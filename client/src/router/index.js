@@ -7,8 +7,15 @@ const routes = [
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import(/* webpackChunkName: "about" */ '@/components/Signup')
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Signup')
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Login')
+  },
+
+
 ]
 
 const router = new VueRouter({
