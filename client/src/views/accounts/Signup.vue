@@ -37,6 +37,7 @@ export default {
       })
       .then(resp => {
         console.log(resp)
+        // this.$router.push({name:})
       })
       .catch(err => {
         console.log(err)
