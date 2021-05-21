@@ -1,16 +1,37 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" class="navbar sticky-top bg-dark">
+      <router-link :to="{name: 'FrontPage'}">Main</router-link> |
+      <router-link :to="{name: 'Community'}">Community</router-link> |
       <router-link :to="{name: 'Signup'}">Signup</router-link> |
       <router-link :to="{name: 'Login'}">Login</router-link> |
+      <router-link to="#" @click.native="onLogout">Logout</router-link> |
     </div>
-    <router-view/>
+    <router-view class="mt-5"/>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'App',
+  methods: {
+    // jwt 토큰을 이용한 인증 확인 필요.
+    onLogout: function () {
+      console.log('로그아웃 메서드입니다.')
+      axios({
+        url: '',
+        method: 'POST',
+      })
+      .then(resp => {
+        console.log(resp)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 
