@@ -3,7 +3,7 @@
     <h1>메인입니다.</h1>
     <!-- card 형태로  영화 목록을 출력한다. -->
     <div class="row">
-      <div class="card col-3" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie.id)">
+      <div class="card col-3" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
         <img :src="movie.image" alt="">
         <span>{{movie.title}}</span>
       </div>
@@ -37,9 +37,8 @@ export default {
     })
   },
   methods: {
-    onDetail: function (id) {
-      console.log('디테일 페이지로 이동합니다.')
-      this.$router.push({name: 'MovieDetail', params: {movieId: id, }})
+    onDetail: function (movie) {
+      this.$router.push({name: 'MovieDetail', params: {movieObj: movie, }})
     }
   }
 }
