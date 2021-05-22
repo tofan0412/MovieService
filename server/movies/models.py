@@ -10,7 +10,7 @@ class Movie(models.Model):
     pubDate = models.CharField(max_length=256)
     director = models.CharField(max_length=256)
     actor = models.CharField(max_length=256)
-    userRating = models.FloatField()
+    userRating = models.IntegerField()
 
 
 class Review(models.Model):

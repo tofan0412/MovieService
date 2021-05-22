@@ -35,6 +35,7 @@ export default {
         data: this.credentials,
       })
       .then(resp => {
+        console.log(resp)
         this.$router.push({name: 'FrontPage'})
       })
       .catch(err => {
