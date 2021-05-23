@@ -1,6 +1,8 @@
 <template>
   <div class="community">
     <h1>게시판입니다.</h1>
+    <router-link :to="{name: 'Create'}">글 작성하기</router-link>
+    <router-view/>
   </div>
 
 </template>

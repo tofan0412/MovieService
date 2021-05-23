@@ -37,6 +37,11 @@ const routes = [
     name: 'Article',
     component: () => import(/* webpackChunkName: "about" */ '@/views/community/Article')
   },
+  {
+    path: `/community/article/create`,
+    name: 'Create',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/community/Create')
+  },
 
 
 ]
