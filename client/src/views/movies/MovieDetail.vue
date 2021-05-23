@@ -45,13 +45,20 @@ export default {
   name: 'MovieDetail',
   data: function () {
     return {
+      movie_id: this.$route.params.movieObj.id,
       reviews: [],
     }
   },
   created: function () {
     // vue 객체가 생성될 때, axios 통해 관람평 데이터를 불러온다.
-    axios({
+    // 방식은 GET 방식 ...
 
+    axios({
+      url: `${this.$store.state.SERVER_URL}/movies/detail/${this.movie_id}/rank_list_create/`,
+      method: 'GET',
+    })
+    .then(resp => {
+      this.reviews = resp.data
     })
   }
 }
