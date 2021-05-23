@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.index),
     path('detail/<int:movie_pk>/', views.detail),
-    path('detail/<int:movie_id>/rate_list_create/', views.rate_list_create),
-    path('detail/<int:rate_pk>/rate_delete/', views.rate_delete),
-    path('detail/<int:movie_pk>/rate_update/', views.rate_update),
+    path('detail/<int:movie_id>/rank_list_create/', views.rank_list_create),
+    path('detail/<int:rank_pk>/rank_delete/', views.rank_delete),
+    path('detail/<int:movie_pk>/rank_update/', views.rank_update),
     # 좋아요 추가 예정
-]
+] 
