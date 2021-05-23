@@ -1,11 +1,16 @@
 <template>
-  <div id="app">
-    <div id="nav" class="navbar sticky-top bg-dark">
-      <router-link :to="{name: 'FrontPage'}">Main</router-link> |
-      <router-link :to="{name: 'Community'}">Community</router-link> |
-      <router-link :to="{name: 'Signup'}">Signup</router-link> |
-      <router-link :to="{name: 'Login'}">Login</router-link> |
-      <router-link to="#" @click.native="onLogout">Logout</router-link> |
+  <div id="app" class="container">
+    <div id="nav" class="sticky-top row justify-content-start align-items-center">
+      <img class="box col-3" :src="imgPath" alt="로고" width="400" height="170">
+      <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
+      <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
+      <div class="box col-3" v-if="!this.$store.state.isLogin">
+        <router-link :to="{name: 'Login'}">Login</router-link> | 
+        <router-link :to="{name: 'Signup'}">Signup</router-link>
+      </div>
+      <div class="box col-2" v-else>
+        <router-link r-link to="#" @click.native="onLogout">Logout</router-link>
+      </div>
     </div>
     <router-view class="mt-5"/>
   </div>
@@ -13,16 +18,29 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'App',
+  data: function () {
+    return {
+      imgPath: require('@/assets/images/logo.png'),
+    }
+  },
   methods: {
     // jwt 토큰을 이용한 인증 확인 필요.
     onLogout: function () {
-      console.log('로그아웃 메서드입니다.')
       localStorage.removeItem('jwt')
       this.$store.state.isLogin = false
       axios.defaults.headers.common['Authorization'] = ``
       this.$router.push({name: "Login"})
+    }
+  },
+  created: function () {
+    const jwt = localStorage.getItem('jwt')
+
+    if (jwt) {
+      this.$store.state.isLogin = true
+      axios.defaults.headers.common['Authorization'] = `${jwt}` // 자식으로 등록 안하면, 소용없나..?
     }
   }
 }
@@ -38,6 +56,7 @@ export default {
 }
 #nav {
   padding: 30px;
+  background-color: black;
 }
 #nav a {
   font-weight: bold;

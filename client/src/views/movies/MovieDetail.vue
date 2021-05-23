@@ -10,12 +10,16 @@
       <p>관람객 평점 : {{ $route.params.movieObj.userRating }}</p>
     </div>
     <!-- 관람평 목록 출력 -->
-    <div class="reviewList">
-      <div v-for="review in reviews" :key="review.id">
-
-
-      </div>
-    </div>
+    <ul class="reviewList">
+      <h1>작성한 관람평</h1>
+      <li v-for="rev in reviews" :key="rev.id">
+        {{ rev.id }}
+        {{ rev.title }}
+        {{ rev.content }}
+        <button @click="delRev(rev)" class="del-btn">X</button>
+        <hr>
+      </li>
+    </ul>
 
     <div class="reviewCreate">
       <h1>관람평 작성하기</h1>
@@ -46,43 +50,42 @@ export default {
   name: 'MovieDetail',
   data: function () {
     return {
-      movie_id: this.$route.params.movieObj.id,
       reviews: [],
       params: {
         title: null,
         content: null,
         rank: null,
-      }
+      },
     }
   },
-  created: function () {
-    // vue 객체가 생성될 때, axios 통해 관람평 데이터를 불러온다.
-    // 방식은 GET 방식 ...
-
-    axios({
-      url: `${this.$store.state.SERVER_URL}/movies/detail/${this.movie_id}/rank_list_create/`,
-      method: 'GET',
-    })
-    .then(resp => {
-      this.reviews = resp.data
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  },
   methods: {
-    // 새로운 관람평 작성 함수.
+    onLoad: function () {
+      axios({
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.params.movieObj.id}/review_list_create/`,
+        method: 'GET',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
+      })
+      .then(resp => {
+        this.reviews = resp.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     onSubmit: function () {
       const review = {
         title: this.params.title,
         content: this.params.content,
         rank: this.params.rank,
       }
-      console.log(review)
+      
       axios({
-        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.movie_id}/rank_list_create/`,
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.params.movieObj.id}/review_list_create/`,
         method: 'POST',
         data: review,
+        // headers 설정이 있어야 request.user를 사용할 수 있다! 안 그러면 AnonymousUser..
       })
       .then(resp => {
         console.log(resp)
@@ -90,11 +93,27 @@ export default {
       .catch(err => {
         console.log(err)
       })
+    },
+    delRev: function (rev) {
+      console.log("리뷰 삭제합니다..")
+      axios({
+        method: 'DELETE',
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${rev.id}/review_delete/`,
+      })
+      .then(resp => {
+        console.log(resp)
+        this.onLoad()
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
-  }
+  },
+  mounted: function () {
+    this.onLoad()
+  },
 }
 </script>
 
 <style>
-
 </style>
