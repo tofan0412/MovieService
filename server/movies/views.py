@@ -24,15 +24,15 @@ def detail(request, movie_pk):
 
 @api_view(['GET', 'POST'])
 def rank_list_create(request, movie_pk):
-    review = get_object_or_404(Review, id=movie_pk)
+    movie = get_object_or_404(Review, id=movie_pk)
     if request.method=='GET':
-        reviews = review.objects.all()
+        reviews = movie.objects.all()
         serializer= ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
     else:
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, review=review)
+            serializer.save(user=request.user, movie=movie)
             return Response(serializer.data)
 
 

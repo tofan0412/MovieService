@@ -19,16 +19,10 @@ export default {
     // jwt 토큰을 이용한 인증 확인 필요.
     onLogout: function () {
       console.log('로그아웃 메서드입니다.')
-      axios({
-        url: '',
-        method: 'POST',
-      })
-      .then(resp => {
-        console.log(resp)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      localStorage.removeItem('jwt')
+      this.$store.state.isLogin = false
+      axios.defaults.headers.common['Authorization'] = ``
+      this.$router.push({name: "Login"})
     }
   }
 }

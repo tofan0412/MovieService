@@ -4,10 +4,10 @@
     <input type="text" name="username" id="username" v-model.trim="credentials.username">
     <br>
     <label for="password">비밀번호</label>
-    <input type="text" name="password" id="password" v-model.trim="credentials.password">
+    <input type="password" name="password" id="password" v-model.trim="credentials.password">
     <br>
     <label for="password">비밀번호 확인</label>
-    <input type="text" name="passwordConfirmation" id="passwordConfirmation" v-model.trim="credentials.passwordConfirmation">
+    <input type="password" name="passwordConfirmation" id="passwordConfirmation" v-model.trim="credentials.passwordConfirmation">
     <br>
     <button @click="onSignup">회원가입</button>
   </div>
@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     onSignup: function () {
-      console.log(this.$store.state.SERVER_URL)
       axios({
         url: `${this.$store.state.SERVER_URL}/accounts/signup/`,
         method: 'POST',
