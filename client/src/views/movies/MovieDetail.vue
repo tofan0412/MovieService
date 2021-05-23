@@ -20,13 +20,13 @@
     <div class="reviewCreate">
       <h1>관람평 작성하기</h1>
       <label for="reviewTitle">제목</label>
-      <input type="text" name="reviewTitle" id="reviewTitle">
+      <input type="text" name="reviewTitle" id="reviewTitle" v-model="params.title">
       <br>
       <label for="reviewContent">내용</label>
-      <textarea name="reviewContent" id="reviewContent" cols="30" rows="10"></textarea>
+      <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" v-model="params.content"></textarea>
       <br>
       <label for="reviewRank">별점</label>
-      <select>
+      <select v-model="params.rank">
         <option value="default">선택</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -34,6 +34,7 @@
         <option value="4">4</option>
         <option value="5">5</option>
       </select>
+      <button @click="onSubmit">관람평 작성</button>
     </div>
   </div>
 </template>
@@ -47,6 +48,11 @@ export default {
     return {
       movie_id: this.$route.params.movieObj.id,
       reviews: [],
+      params: {
+        title: null,
+        content: null,
+        rank: null,
+      }
     }
   },
   created: function () {
@@ -60,6 +66,31 @@ export default {
     .then(resp => {
       this.reviews = resp.data
     })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+  methods: {
+    // 새로운 관람평 작성 함수.
+    onSubmit: function () {
+      const review = {
+        title: this.params.title,
+        content: this.params.content,
+        rank: this.params.rank,
+      }
+      console.log(review)
+      axios({
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.movie_id}/rank_list_create/`,
+        method: 'POST',
+        data: review,
+      })
+      .then(resp => {
+        console.log(resp)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>
