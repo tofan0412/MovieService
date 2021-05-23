@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'movies',
 
     # second parties
+    'django_seed',
     'rest_framework',
     'corsheaders',
 
