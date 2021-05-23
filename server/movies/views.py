@@ -23,29 +23,29 @@ def detail(request, movie_pk):
 ## rating 관련 로직
 
 @api_view(['GET', 'POST'])
-def rank_list_create(request, movie_id):
-    movie = get_object_or_404(Review, id=movie_id)
+def rank_list_create(request, movie_pk):
+    review = get_object_or_404(Review, id=movie_pk)
     if request.method=='GET':
-        ranks = review.objects.all()
-        serializer= ReviewSerializer(ranks, many=True)
+        reviews = review.objects.all()
+        serializer= ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
     else:
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, movie=movie)
+            serializer.save(user=request.user, review=review)
             return Response(serializer.data)
 
 
 @api_view(['DELETE'])
-def rank_delete(request, rank_pk):
-    rank = get_object_or_404(Review, pk=rank_pk)
-    rank.delete()
-    return Response({'id': rank_pk})
+def rank_delete(request, movie_pk):
+    review = get_object_or_404(Review, pk=movie_pk)
+    review.delete()
+    return Response({'id': movie_pk})
 
 
 @api_view(['PUT'])
-def rank_update(request, movie_id):
-    review = get_object_or_404(Review, id=movie_id)
+def rank_update(request, movie_pk):
+    review = get_object_or_404(Review, id=movie_pk)
     rank = get_object_or_404(Review, user=request.user)
     rank.delete()
     serializer = ReviewSerializer(data=request.data)
