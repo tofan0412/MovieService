@@ -2,12 +2,12 @@
   <div class="movieDetail">
     <div class="movie">
       <h1>영화 디테일입니다.</h1>
-      <h1>{{ $route.params.movieObj.title }}</h1>  
-      <h2>{{ $route.params.movieObj.subtitle }}</h2>  
-      <img :src="$route.params.movieObj.image" alt="">
-      <p>감독 : {{ $route.params.movieObj.director }}</p>
-      <p>출연 배우 : {{ $route.params.movieObj.actor }}</p>
-      <p>관람객 평점 : {{ $route.params.movieObj.userRating }}</p>
+      <h1>{{ $route.query.movieObj.title }}</h1>  
+      <h2>{{ $route.query.movieObj.subtitle }}</h2>  
+      <img :src="$route.query.movieObj.image" alt="">
+      <p>감독 : {{ $route.query.movieObj.director }}</p>
+      <p>출연 배우 : {{ $route.query.movieObj.actor }}</p>
+      <p>관람객 평점 : {{ $route.query.movieObj.userRating }}</p>
     </div>
     <!-- 관람평 목록 출력 -->
     <ul class="reviewList">
@@ -16,7 +16,7 @@
         {{ rev.id }}
         {{ rev.title }}
         {{ rev.content }}
-        <button @click="delRev(rev)" class="del-btn">X</button>
+        <button @click="delReview(rev)" class="del-btn">X</button>
         <hr>
       </li>
     </ul>
@@ -61,7 +61,7 @@ export default {
   methods: {
     onLoad: function () {
       axios({
-        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.params.movieObj.id}/review_list_create/`,
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.query.movieObj.id}/review_list_create/`,
         method: 'GET',
         headers: {
           Authorization: `JWT ${localStorage.getItem('jwt')}`,
@@ -82,23 +82,30 @@ export default {
       }
       
       axios({
-        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.params.movieObj.id}/review_list_create/`,
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.query.movieObj.id}/review_list_create/`,
         method: 'POST',
         data: review,
         // headers 설정이 있어야 request.user를 사용할 수 있다! 안 그러면 AnonymousUser..
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
       })
       .then(resp => {
         console.log(resp)
+        this.onLoad()
       })
       .catch(err => {
         console.log(err)
       })
     },
-    delRev: function (rev) {
+    delReview: function (rev) {
       console.log("리뷰 삭제합니다..")
       axios({
         method: 'DELETE',
         url: `${this.$store.state.SERVER_URL}/movies/detail/${rev.id}/review_delete/`,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
       })
       .then(resp => {
         console.log(resp)

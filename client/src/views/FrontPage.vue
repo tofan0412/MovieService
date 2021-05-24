@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     onDetail: function (movie) {
-      this.$router.push({name: 'MovieDetail', params: {movieObj: movie, }})
+      this.$router.push({name: 'MovieDetail', query: {movieObj: movie, }})
     }
   }
 }
