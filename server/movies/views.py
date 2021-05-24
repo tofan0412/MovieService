@@ -1,5 +1,5 @@
 from django.http.response import JsonResponse
-from server.community import serializers
+# from server.community import serializers
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -26,8 +26,8 @@ def detail(request, movie_pk):
 
 
 @api_view(['GET'])
-def review_list(request):
-    reviews = Review.objects.all()
+def review_list(request, movie_pk):
+    reviews = Review.objects.filter(movie_id=movie_pk)
     serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data)
 

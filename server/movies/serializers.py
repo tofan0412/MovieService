@@ -12,7 +12,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ('id', 'title', 'content', 'rank', 'liked_users')
+        fields = ('id', 'title', 'content', 'rank')
 
 # class RateSerializer(serializers.ModelSerializer):
 

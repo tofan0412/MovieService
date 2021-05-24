@@ -61,11 +61,8 @@ export default {
   methods: {
     onLoad: function () {
       axios({
-        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.query.movieObj.id}/review_list_create/`,
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.query.movieObj.id}/review_list/`,
         method: 'GET',
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('jwt')}`,
-        },
       })
       .then(resp => {
         this.reviews = resp.data
@@ -80,7 +77,6 @@ export default {
         content: this.params.content,
         rank: this.params.rank,
       }
-      
       axios({
         url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.query.movieObj.id}/review_list_create/`,
         method: 'POST',
@@ -117,6 +113,7 @@ export default {
     }
   },
   mounted: function () {
+    console.log('리뷰 목록을 조회합니다.')
     this.onLoad()
   },
 }

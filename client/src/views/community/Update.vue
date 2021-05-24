@@ -30,7 +30,7 @@ export default {
       }
       
       axios({
-        url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/`,
+        url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/article_update_delete/`,
         method: 'PUT',
         data: article,
         headers: {

@@ -30,7 +30,7 @@ export default {
       }
       
       axios({
-        url: `${this.$store.state.SERVER_URL}/community/`,
+        url: `${this.$store.state.SERVER_URL}/community/articlelist_create/`,
         method: 'POST',
         data: article,
         headers: {

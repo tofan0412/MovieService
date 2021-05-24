@@ -36,18 +36,14 @@ export default {
     }
   },
   created: function () {
-    // 게시글에 작성된 댓글 목록을 불러온다.
     this.onLoad()
-
   },
   methods: {
+    // 게시글에 작성된 댓글 목록을 불러온다.
     onLoad: function () {
       axios({
-        url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/comment_list_create/`,
+        url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/comment_list/`,
         method: 'GET',
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('jwt')}`,
-        },
       })
       .then(resp => {
         this.comments = resp.data
@@ -58,8 +54,11 @@ export default {
     },
     onDelete: function () {
       axios({
-        url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/`,
+        url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/article_update_delete/`,
         method: 'DELETE',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
       })
       .then(resp => {
         console.log(resp)
@@ -93,12 +92,17 @@ export default {
       })
     },
     onDelete_Comment: function (comment) {
+      console.log(comment)
       axios({
-        url: ``,
+        url: `${this.$store.state.SERVER_URL}/community/${comment.id}/comment_delete/`,
         method: 'DELETE',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
       })
       .then(resp => {
         console.log(resp)
+        this.onLoad()
       })
       .catch(err => {
         console.log(err)

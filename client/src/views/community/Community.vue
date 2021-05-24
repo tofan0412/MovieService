@@ -26,23 +26,23 @@ export default {
     onDetail: function (article) {
       this.$store.state.article = article
       this.$router.push({name: 'Article'})
+    },
+    onLoad: function () {
+      axios({
+        url: `${this.$store.state.SERVER_URL}/community/`,
+        method: 'GET',
+      })
+      .then(resp => {
+        this.articles = resp.data
+        this.$store.state.article = null // 선택할 게시글 객체 초기화
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   },
   created: function () {
-    axios({
-      url: `${this.$store.state.SERVER_URL}/community/`,
-      method: 'GET',
-      headers: {
-        Authorization: `JWT ${localStorage.getItem('jwt')}`,
-      },
-    })
-    .then(resp => {
-      this.articles = resp.data
-      this.$store.state.article = null // 선택할 게시글 객체 초기화
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    this.onLoad()
   }
 }
 </script>
