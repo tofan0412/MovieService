@@ -4,7 +4,7 @@
     <input type="text" name="username" id="username" v-model="credentials.username">
     <br>
     <label for="password">비밀번호</label>
-    <input type="text" name="password" id="password" v-model="credentials.password">
+    <input type="password" name="password" id="password" v-model="credentials.password">
     <br>
     <button @click="onLogin">로그인</button>
   </div>

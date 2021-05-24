@@ -28,8 +28,6 @@ export default {
       method: 'GET',
     })
     .then(resp => {
-      console.log(`${this.$store.state.SERVER_URL}`)
-      console.log(resp.data)
       this.movieList = resp.data
     })
     .catch(err => {
