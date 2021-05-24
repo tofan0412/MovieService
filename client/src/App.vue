@@ -40,7 +40,7 @@ export default {
 
     if (jwt) {
       this.$store.state.isLogin = true
-      axios.defaults.headers.common['Authorization'] = `${jwt}` // 자식으로 등록 안하면, 소용없나..?
+      // axios.defaults.headers.common['Authorization'] = `${jwt}` // 자식으로 등록 안하면, 소용없나..?
     }
   }
 }

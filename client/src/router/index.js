@@ -28,19 +28,28 @@ const routes = [
   },
   // 커뮤니티 관련 URL
   {
+    // 게시글 목록 Read 페이지
     path: '/community',
     name: 'Community',
     component: () => import(/* webpackChunkName: "about" */ '@/views/community/Community')
   },
   {
+    // 게시글 Read 페이지
     path: `/community/article/`,
     name: 'Article',
     component: () => import(/* webpackChunkName: "about" */ '@/views/community/Article')
   },
   {
+    // 게시글 Create 페이지
     path: `/community/article/create`,
     name: 'Create',
     component: () => import(/* webpackChunkName: "about" */ '@/views/community/Create')
+  },
+  {
+    // 게시글 Update 페이지
+    path: `/community/article/update`,
+    name: 'Update',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/community/Update')
   },
 
 

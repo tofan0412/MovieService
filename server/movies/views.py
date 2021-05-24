@@ -64,4 +64,3 @@ def review_update(request, review_pk):
 
 # 좋아요 추가 예정
 
-    
