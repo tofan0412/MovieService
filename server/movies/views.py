@@ -56,7 +56,7 @@ def review_delete(request, review_pk):
 @permission_classes([IsAuthenticated]) 
 def review_update(request, review_pk):
     review = get_object_or_404(Review, user=request.user)
-    rank.delete()
+    review.delete()
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user, review=review)

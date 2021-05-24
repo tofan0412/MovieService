@@ -4,7 +4,6 @@
     <div v-for="article in articles" :key="article.id">
       {{ article.title }}
       {{ article.content }}
-      {{ article.created_at }}
     </div>
     <router-link :to="{name: 'Create'}">글 작성하기</router-link>
     <router-view/>
