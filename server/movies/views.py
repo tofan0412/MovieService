@@ -23,22 +23,22 @@ def detail(request, movie_pk):
     return Response(serializers.data)
 
 
-## rating 관련 로직
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
+def review_list(request):
+    reviews = Review.objects.all()
+    serializer = ReviewSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_list_create(request, movie_pk):
     movie = get_object_or_404(Movie, id=movie_pk)
-    
-    if request.method == 'GET':
-        reviews = Review.objects.all()
-        serializer = ReviewSerializer(reviews, many=True)
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
-    else:
-        serializer = ReviewSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, movie=movie)
-            return Response(serializer.data)
 
 
 @api_view(['DELETE'])
