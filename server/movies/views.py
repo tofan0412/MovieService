@@ -1,4 +1,5 @@
 from django.http.response import JsonResponse
+from rest_framework import response
 from server.community import serializers
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -7,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .serializers import MovieSerializer, ReviewSerializer
 from .models import Movie, Review
+import requests
 
 
 @api_view(['GET'])  #일단 GET방식 테스트
@@ -23,6 +25,26 @@ def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializers = MovieSerializer(movie)
     return Response(serializers.data)
+
+
+@api_view(['GET'])
+def trailer(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    input = movie.subtitle + 'trailer'
+    url = 'https://www.googleapis.com/youtube/v3/search'
+    params = {
+        'key': 'AIzaSyC4uHRgq7maECpf4WEkbDjKwhRc6G7Xlk8',
+        'part': 'snippet',
+        'type': 'video',
+        'maxResults': '1',        
+        'q': input
+    }
+    response = requests.get(url, params)
+    response_dic = response.json() # Json response이므로 딕셔너리 타입으로 변환
+    data = {
+        'YoutubeItem': response_dic['items']
+    }
+    return JsonResponse(data) #response를 커스터마이징 후에 전달하고 싶어서 사용
 
 
 @api_view(['GET'])
