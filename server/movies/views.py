@@ -1,3 +1,5 @@
+from django.http.response import JsonResponse
+from server.community import serializers
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -23,22 +25,22 @@ def detail(request, movie_pk):
     return Response(serializers.data)
 
 
-## rating 관련 로직
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
+def review_list(request):
+    reviews = Review.objects.all()
+    serializer = ReviewSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_list_create(request, movie_pk):
     movie = get_object_or_404(Movie, id=movie_pk)
-    
-    if request.method == 'GET':
-        reviews = Review.objects.all()
-        serializer = ReviewSerializer(reviews, many=True)
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
-    else:
-        serializer = ReviewSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, movie=movie)
-            return Response(serializer.data)
 
 
 @api_view(['DELETE'])
@@ -62,5 +64,22 @@ def review_update(request, review_pk):
         return Response(serializer.data)
 
 
-# 좋아요 추가 예정
-
+@authentication_classes([JSONWebTokenAuthentication]) 
+@permission_classes([IsAuthenticated]) 
+def like(request, review_pk):
+    user = request.user
+    review = get_object_or_404(Review, pk=review_pk)
+    
+    if review.liked_users.filter(pk=user.pk).exists(): #이미 좋아요했으면 취소
+        review.liked_users.remove(user)
+        liked = False  
+    else:
+        review.liked_users.add(user)
+        liked = True
+        
+    count = review.liked_users.count()
+    data = {
+        'liked': liked,
+        'count': count,
+    }
+    return JsonResponse(data)
