@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .serializers import MovieSerializer, ReviewSerializer
 from .models import Movie, Review
 
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 @api_view(['GET'])  #일단 GET방식 테스트
 def index(request):
@@ -55,14 +54,12 @@ def review_delete(request, review_pk):
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_update(request, review_pk):
-    review = get_object_or_404(Review, user=request.user)
-    review.delete()
+    review = get_object_or_404(Review, pk=review_pk)
+    # review.delete()
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user, review=review)
         return Response(serializer.data)
-
-
 
 
 # 좋아요 추가 예정
