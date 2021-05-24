@@ -5,8 +5,6 @@
       <h1>{{ $route.query.movieObj.title }}</h1>  
       <h2>{{ $route.query.movieObj.subtitle }}</h2>  
       <img :src="$route.query.movieObj.image" alt="">
-      <p>감독 : {{ $route.query.movieObj.director }}</p>
-      <p>출연 배우 : {{ $route.query.movieObj.actor }}</p>
       <p>관람객 평점 : {{ $route.query.movieObj.userRating }}</p>
     </div>
     <!-- 관람평 목록 출력 -->

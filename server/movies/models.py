@@ -4,12 +4,9 @@ from django.db import models
 # Create your models here.
 class Movie(models.Model):
     title = models.CharField(max_length=256)
-    link = models.TextField()
     image = models.TextField()
     subtitle = models.CharField(max_length=256)   
     pubDate = models.CharField(max_length=256)
-    director = models.CharField(max_length=256)
-    actor = models.CharField(max_length=256)
     userRating = models.FloatField()
 
 

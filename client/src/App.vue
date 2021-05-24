@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="container">
-    <div id="nav" class="sticky-top row justify-content-start align-items-center">
-      <img class="box col-3" :src="imgPath" alt="로고" width="400" height="170">
+  <div id="app" class="container-fluid">
+    <div id="nav" class="row justify-content-start align-items-center">
+      <img class="box col-3" :src="imgPath" alt="로고" width="220" height="150">
       <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
       <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
       <div class="box col-3" v-if="!this.$store.state.isLogin">
@@ -52,7 +52,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  width: 1920px;
+  height: 1080px;
   color: #2c3e50;
+
 }
 #nav {
   padding: 30px;

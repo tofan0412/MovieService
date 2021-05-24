@@ -1,12 +1,27 @@
-<template>
-  <div class="login">
-    <label for="username">사용자 아이디</label>
-    <input type="text" name="username" id="username" v-model="credentials.username">
-    <br>
-    <label for="password">비밀번호</label>
-    <input type="password" name="password" id="password" v-model="credentials.password">
-    <br>
-    <button @click="onLogin">로그인</button>
+/<template>
+  <div class="login container">
+    <div class="row6yt8ii/">
+      <div class="col-6 mt-5">
+        <input type="text" id="username" class="form-control"
+          v-model="credentials.username" placeholder="아이디">
+        <br>
+        <input 
+          type="password" name="password" id="password" class="form-control" 
+          v-model="credentials.password" placeholder="비밀번호">
+        <br>
+        <div class="row justify-content-between align-items-center">
+          <div class="col-3">
+            <input type="checkbox">&nbsp;아이디 기억하기
+          </div>
+          <div class="col-4">
+            <button id="loginBtn" class="btn btn-lg btn-primary" @click="onLogin">로그인</button>
+          </div>
+        </div>
+        <div class="col-6">
+          <img src="" alt="">
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,5 +62,8 @@ export default {
 </script>
 
 <style>
-
+.login{
+  border: 1px solid grey;
+  border-radius: 0.45rem;
+}
 </style>
