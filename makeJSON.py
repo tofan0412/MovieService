@@ -47,7 +47,7 @@ for index, movieInfo in enumerate(results):
     tmp["pk"] = str(index)
     tmp["fields"] = {}
     tmp["fields"]["title"] = movieInfo['title']
-    tmp["fields"]["image"] = movieInfo['poster_path']
+    tmp["fields"]["image"] = "https://www.themoviedb.org/t/p/w1280/" + movieInfo['poster_path']
     tmp["fields"]["subtitle"] = movieInfo['original_title']
     tmp["fields"]["pubDate"] = movieInfo['release_date']
     tmp["fields"]["userRating"] = movieInfo['vote_average']
