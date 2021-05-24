@@ -17,8 +17,6 @@ def index(request):
 
 
 @api_view(['GET'])
-@authentication_classes([JSONWebTokenAuthentication]) # 로그인 했는가? (인증했는가?)
-@permission_classes([IsAuthenticated]) # 인증이 된 상태에서만 권한이 부여된다.
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializers = MovieSerializer(movie)
