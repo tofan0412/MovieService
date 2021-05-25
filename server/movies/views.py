@@ -1,5 +1,6 @@
-from django.http.response import JsonResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
@@ -112,9 +113,40 @@ def recommend(request):
     # genre 별로 영화를 가져온다. 
     for genre in genres:
         genreObj = get_object_or_404(Genre, pk=genre.id)
-        q2 = genreObj.movies.order_by('?')[:3]
+        q2 = genreObj.movies.order_by('?')[:5]
         q1 = q1 | q2
 
     serializer = MovieSerializer(q1, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication]) 
+@permission_classes([IsAuthenticated]) 
+def favorite_create(request):
+    # 각 영화에 대해 genre를 불러온다..
+    genres = []
+    for movie_id in request.data: 
+        movie = get_object_or_404(Movie, pk=movie_id)
+        for genre in movie.genres.all():
+            # 장르가 중복되어선 안된다.
+            if genre not in genres:
+                genres.append(genre)
     
+    user = request.user
+    for genre in genres:
+        # 이미 있으면 넣으면 안된다.
+        if user.like_genres.filter(pk=genre.id).exists():
+            pass
+        else:
+            user.like_genres.add(genre)
+
+    return HttpResponse(status=status.HTTP_201_CREATED)
+
+
+
+@api_view(['POST'])
+def favorite_list(request):
+    # 로그인 되어 있는 경우에는? 사용자의 추천 영화 목록을 기준으로 데이터 전송
+    # 로그인 안한 경우에는? 평점 8.5점 이상 영화를 랜덤으로..
+    print(request.user)
