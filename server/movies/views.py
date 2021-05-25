@@ -146,5 +146,23 @@ def favorite_create(request):
 
 
 @api_view(['POST'])
-def favorite_list(request):
-    print(request.user)
+@authentication_classes([JSONWebTokenAuthentication]) 
+@permission_classes([IsAuthenticated]) 
+def favorite_list_user(request):
+    # 사용자가 선택한 genre 기반으로 영화 데이터를 추출한다.
+    user = request.user
+    genres = user.like_genres.order_by('?')[:1] # 사용자가 선택한 장르 중에서 임의로 하나 불러오기.
+    genre_dict = genres.values()
+    genre_id = genre_dict[0]['id']
+    
+    genre = Genre.objects.filter(pk=genre_id)
+    movies = genre.movies.all()
+    print(movies)
+    
+
+@api_view(['POST'])
+def favorite_list_anonymousUser(request):
+    # 평점 8.5 이상인 영화를 기반으로 영화 데이터를 추출한다.
+    movies = Movie.objects.filter(userRating__gte=8.0).order_by('?')[:5]
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)

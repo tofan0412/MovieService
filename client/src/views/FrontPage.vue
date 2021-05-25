@@ -9,6 +9,15 @@
 
     <!-- card 형태로  영화 목록을 출력한다. -->
     <div class="row">
+      <h3>추천 영화</h3>
+      <div class="card col-2" v-for="movie in recommendMovieList" :key="movie.id" @click="onDetail(movie)">
+        <img :src="movie.image" alt="">
+        <span>{{movie.title}}</span>
+      </div>
+    </div>
+    
+    <div class="row">
+      <h3>최신 영화</h3>
       <div class="card col-3" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
         <img :src="movie.image" alt="">
         <span>{{movie.title}}</span>
@@ -48,9 +57,8 @@ export default {
     },
     recommendMovie: function () {
       if (this.$store.state.isLogin === true) {
-        console.log('로그인 되어 있음 : 유저 추천 영화 목록 불러온다.')
         axios({
-          url: `${this.$store.state.SERVER_URL}/movies/favorite/list/`,
+          url: `${this.$store.state.SERVER_URL}/movies/favorite/list/user`,
           method: 'POST',
           // token이 있는 경우에만 headers를 전송한다
           headers: {
@@ -65,13 +73,12 @@ export default {
         })
       }
       else if (this.$store.state.isLogin === false) {
-        console.log('로그인 X: 8.5 이상으로 불러온다.')
         axios({
-          url: `${this.$store.state.SERVER_URL}/movies/favorite/list/`,
+          url: `${this.$store.state.SERVER_URL}/movies/favorite/list/anonymousUser`,
           method: 'POST',
         })
         .then(resp => {
-          console.log(resp)
+          this.recommendMovieList = resp.data
         })
         .catch(err => {
           console.log(err)
