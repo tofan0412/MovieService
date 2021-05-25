@@ -4,7 +4,8 @@
       <h1>영화 디테일입니다.</h1>
       <h1>{{ $route.query.movieObj.title }}</h1>  
       <h2>{{ $route.query.movieObj.subtitle }}</h2>  
-      <img :src="$route.query.movieObj.image" alt="">
+      <img :src="$route.query.movieObj.image" alt="" width="400" height="600">
+      <p>개봉일 : {{ $route.query.movieObj.pubDate }}</p>
       <p>관람객 평점 : {{ $route.query.movieObj.userRating }}</p>
     </div>
     <!-- 관람평 목록 출력 -->

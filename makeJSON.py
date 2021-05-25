@@ -53,5 +53,8 @@ for index, movieInfo in enumerate(results):
     tmp["fields"]["userRating"] = movieInfo['vote_average']
     data.append(tmp)
 
+    # Genre 처리해줘야 한다...
+    
+
 with open(file_path, 'w', encoding='UTF-8') as outfile:
     json.dump(data, outfile, indent=4, ensure_ascii=False)
