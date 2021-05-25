@@ -11,6 +11,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=256)
     image = models.TextField()
     subtitle = models.CharField(max_length=256)   
+    overview = models.TextField()
     pubDate = models.CharField(max_length=256)
     userRating = models.FloatField()
     genres = models.ManyToManyField(Genre, related_name="movies")
