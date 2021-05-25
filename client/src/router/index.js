@@ -15,6 +15,11 @@ const routes = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "about" */ '@/views/accounts/Login')
   },
+  {
+    path: '/recommend',
+    name: 'Recommend',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/accounts/Recommend')
+  },
   // 영화 페이지 관련 URL
   {
     path: '/frontPage',

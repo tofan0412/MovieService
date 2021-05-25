@@ -35,7 +35,7 @@ export default {
       })
       .then(resp => {
         console.log(resp)
-        this.$router.push({name: 'FrontPage'})
+        this.$router.push({name: 'Recommend'})
       })
       .catch(err => {
         console.log(err)

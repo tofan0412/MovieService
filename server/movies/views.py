@@ -83,18 +83,18 @@ def review_update(request, review_pk):
 
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
-def like(request, review_pk):
+def like(request, movie_pk):
     user = request.user
-    review = get_object_or_404(Review, pk=review_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
     
-    if review.liked_users.filter(pk=user.pk).exists(): #이미 좋아요했으면 취소
-        review.liked_users.remove(user)
+    if movie.like_users.filter(pk=user.pk).exists(): #이미 좋아요했으면 취소
+        movie.like_users.remove(user)
         liked = False  
     else:
-        review.liked_users.add(user)
+        movie.like_users.add(user)
         liked = True
         
-    count = review.liked_users.count()
+    count = movie.like_users.count()
     data = {
         'liked': liked,
         'count': count,
