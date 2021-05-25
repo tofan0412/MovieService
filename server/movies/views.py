@@ -100,3 +100,8 @@ def like(request, movie_pk):
         'count': count,
     }
     return JsonResponse(data)
+
+
+def recommend(request):
+    # genre 별로 영화를 가져온다. 
+    pass
