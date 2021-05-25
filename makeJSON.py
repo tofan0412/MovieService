@@ -1,3 +1,4 @@
+from server import movies
 import requests
 import json
 
@@ -43,30 +44,33 @@ file_path2 = './movie_genre_info.json'
 # print(result[0])
 data = []
 data2 = []
-
+titles = []
 genre_pk = 0
 for index, movieInfo in enumerate(results):
-    tmp = {}
-    tmp["model"] = "movies.movie"
-    tmp["pk"] = str(index)
-    tmp["fields"] = {}
-    tmp["fields"]["title"] = movieInfo['title']
-    tmp["fields"]["image"] = "https://www.themoviedb.org/t/p/w1280/" + movieInfo['poster_path']
-    tmp["fields"]["overview"] = movieInfo['overview']
-    tmp["fields"]["subtitle"] = movieInfo['original_title']
-    tmp["fields"]["pubDate"] = movieInfo['release_date']
-    tmp["fields"]["userRating"] = movieInfo['vote_average']
+    # 중복되는 영화는 배제해야 한다.
+    if movieInfo['title'] not in titles:
+        titles.append(movieInfo['title'])
+        tmp = {}
+        tmp["model"] = "movies.movie"
+        tmp["pk"] = str(index)
+        tmp["fields"] = {}
+        tmp["fields"]["title"] = movieInfo['title']
+        tmp["fields"]["image"] = "https://www.themoviedb.org/t/p/w1280/" + movieInfo['poster_path']
+        tmp["fields"]["overview"] = movieInfo['overview']
+        tmp["fields"]["subtitle"] = movieInfo['original_title']
+        tmp["fields"]["pubDate"] = movieInfo['release_date']
+        tmp["fields"]["userRating"] = movieInfo['vote_average']
     
-    # # Genre 처리해줘야 한다...
-    genres = movieInfo["genre_ids"]
-    for genre in genres:
-        tmp2 = {}
-        tmp2["model"] = "movies.movie_genres"
-        tmp2["pk"] = str(genre_pk);genre_pk += 1
-        tmp2["fields"] = {}
-        tmp2["fields"]["movie_id"] = str(index)
-        tmp2["fields"]["genre_id"] = str(genre)
-        data2.append(tmp2)
+        # # Genre 처리해줘야 한다...
+        genres = movieInfo["genre_ids"]
+        for genre in genres:
+            tmp2 = {}
+            tmp2["model"] = "movies.movie_genres"
+            tmp2["pk"] = str(genre_pk);genre_pk += 1
+            tmp2["fields"] = {}
+            tmp2["fields"]["movie_id"] = str(index)
+            tmp2["fields"]["genre_id"] = str(genre)
+            data2.append(tmp2)
     
     data.append(tmp)
 

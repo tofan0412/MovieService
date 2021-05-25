@@ -3,9 +3,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .serializers import MovieSerializer, ReviewSerializer
-from .models import Movie, Review
+from .models import Genre, Movie, Review
 import requests
 
 
@@ -102,6 +103,18 @@ def like(request, movie_pk):
     return JsonResponse(data)
 
 
+@api_view(['POST'])
 def recommend(request):
+    genres = Genre.objects.all()
+    
+    test = Movie.objects.all()
+    q1 = Movie.objects.none()
     # genre 별로 영화를 가져온다. 
-    pass
+    for genre in genres:
+        genreObj = get_object_or_404(Genre, pk=genre.id)
+        q2 = genreObj.movies.order_by('?')[:3]
+        q1 = q1 | q2
+
+    serializer = MovieSerializer(q1, many=True)
+    return Response(serializer.data)
+    

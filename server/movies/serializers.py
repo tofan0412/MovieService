@@ -13,10 +13,4 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'title', 'content', 'rank')
-
-# class RateSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Movie
-#         fields = ('userRating')
         
