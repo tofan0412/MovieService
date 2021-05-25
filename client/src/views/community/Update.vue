@@ -1,11 +1,16 @@
 <template>
   <div class="update">
-    <h1>글 수정하기</h1>
-    <label for=""></label>
-    <input type="text" name="title" id="title" v-model.trim="article.title"><br>
-    <label for=""></label>
-    <textarea name="" id="" cols="30" rows="10" v-model.trim="article.content"></textarea>
-    <button @click="onUpdate">글 수정하기</button>
+    <form>
+      <div class="mb-3">
+        <h1>글 수정하기</h1>
+      </div>
+      <div class="mb-3">
+        <textarea name="" id="제목" cols="60" rows="1" v-model.trim="article.title" placeholder="제목:"></textarea>
+      </div>
+      <textarea name="" id="" cols="60" rows="3" v-model.trim="article.content" placeholder="내용:"></textarea>
+      <p><button type="submit" class="btn btn-primary" @click="onUpdate">글 수정하기</button></p>
+    </form>
+
   </div>
 </template>
 

@@ -1,24 +1,27 @@
 <template>
   <div class="article">
-    <div>
-      <h1>게시글입니다.</h1>
-      <p>{{ this.article.title }}</p>
-      <p>{{ this.article.content }}</p>
-      <p>{{ this.article.created_at }}</p>
-      <p>{{ this.article.updated_at }}</p>
-      <button @click="toUpdatePage">게시글 수정</button>
-      <button @click="onDelete">게시글 삭제</button>
-    </div>
-    <div>
-      <div v-for="comment in comments" :key="comment.id">
-        {{ comment.user }}
-        {{ comment.content }}
-        <button @click="onDelete_Comment(comment)">X</button>
-      </div>
-      <h1>댓글 작성</h1>
-      <input name="comment" id="comment" v-model="comment_content">
-      <button @click="commentSubmit">작성</button>
+    <div>       
+    <form>
+      <p><h2>제목: {{ this.article.title }}</h2><p>
+      <p><h2>내용: {{ this.article.content }}</h2><p>
+      <p><h5>생성시간: {{ this.article.created_at }}</h5><p>
+      <p><h5>수정시간: {{ this.article.updated_at }}</h5><p>
+      <button @click="toUpdatePage"  class="btn btn-outline-secondary">게시글 수정</button>
+      <button @click="onDelete"  class="btn btn-outline-secondary">게시글 삭제</button>
       
+      <div class="mb-3">
+        <h3>댓글 작성</h3>
+        <input name="comment" id="comment" v-model="comment_content">
+        <button @click="commentSubmit">작성</button>
+      </div>
+
+      
+      <div v-for="comment in comments" :key="comment.id">
+        <p>{{ comment.user }} : {{ comment.content }}
+        생성시간: {{ comment.created_at }} 수정시간: {{ comment.updated_at }}
+        <button @click="onDelete_Comment(comment)">X</button></p>
+      </div>
+    </form>
     </div>
   </div>
 </template>

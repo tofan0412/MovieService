@@ -1,6 +1,12 @@
 <template>
   <div class="main container">
-    <h1>메인입니다.</h1>
+
+  <!-- 헤더에 배경 이미지 넣고 출력할 것. -->
+  <!-- <header class="d-flex flex-column justify-content-center align-items-center">
+    <div class="display-2 text-white fw-bold">SSAFY BOX</div>
+  </header> -->
+
+
     <!-- card 형태로  영화 목록을 출력한다. -->
     <div class="row">
       <div class="card col-3" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
@@ -38,7 +44,7 @@ export default {
     onDetail: function (movie) {
       this.$router.push({name: 'MovieDetail', query: {movieObj: movie, }})
     }
-  }
+  },
 }
 </script>
 
