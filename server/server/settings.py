@@ -151,3 +151,4 @@ JWT_AUTH = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+GENRE_MODEL = 'movies.Genre'
