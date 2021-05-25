@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container-fluid">
     <div id="nav" class="row justify-content-start align-items-center">
-      <img class="box col-3" :src="imgPath" alt="로고" width="220" height="150">
+      <img class="box col-3" :src="imgPath" alt="로고" width="220" height="120">
       <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
       <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
         <div class="box col-3" v-if="!this.$store.state.isLogin">
@@ -11,7 +11,6 @@
         <div class="box col-2" v-else>
           <router-link r-link to="#" @click.native="onLogout">Logout</router-link>
         </div>
-
     </div>
     <router-view class="mt-5"/>
   </div>
@@ -59,7 +58,7 @@ export default {
 
 }
 #nav {
-  padding: 30px;
+  padding: 20px;
   background-color: black;
 }
 #nav a {
