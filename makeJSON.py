@@ -65,7 +65,7 @@ for index, movieInfo in enumerate(results):
         tmp2["pk"] = str(genre_pk);genre_pk += 1
         tmp2["fields"] = {}
         tmp2["fields"]["movie_id"] = str(index)
-        tmp2["fields"]["genre_id"] = genre
+        tmp2["fields"]["genre_id"] = str(genre)
         data2.append(tmp2)
     
     data.append(tmp)

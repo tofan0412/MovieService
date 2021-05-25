@@ -106,7 +106,7 @@
   },
   {
     "model": "movies.genre",
-    "id": 10770,
+    "pk": 10770,
     "fields": {
       "name": "TV 영화"
     }
