@@ -1,6 +1,5 @@
 <template>
   <div class="recommend container">
-    <h1>추천 페이지입니다.</h1>
     <h3>좋아하는 영화를 선택해 주세요.</h3>
     <div class="row">
       <div :id="'movie-'+ movie.id" 
@@ -9,10 +8,12 @@
         :key="movie.id" 
         @click="onSelect(movie)"
       >
-        <input type="text" disabled="disabled">
         <img :src="movie.image" alt="" width="300px" height="500px">
         <h5 class="card-title">{{ movie.title }}</h5>
       </div>
+    </div>
+    <div class="row fixed-bottom" >
+      <button class="btn btn-primary" @click="onSubmit()">선택 종료</button>
     </div>
   </div>
 </template>
@@ -37,9 +38,30 @@ export default {
         this.myMovies.push(movie.id)
       }
       else if (this.myMovies.includes(movie.id)){
-        this.myMovies.splice(this.myMovies.indexOf(movie.id))
+        const pos = this.myMovies.indexOf(movie.id)
+        if (pos !== -1) {
+          this.myMovies.splice(pos, 1)  
+        }
       }
-    }
+    },
+    onSubmit: function () {
+      axios({
+        url: `${this.$store.state.SERVER_URL}/movies/favorite/create/`,
+        method: 'POST',
+        data: this.myMovies,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },   
+      })
+      .then(resp => {
+        console.log(resp.status)
+        alert('추천 영화가 등록되었습니다.')
+        this.$router.push({name: 'FrontPage'})
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
   },
   created: function () {
     axios({

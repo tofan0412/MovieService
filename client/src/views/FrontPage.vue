@@ -25,6 +25,7 @@ export default {
   data: function () {
     return {
       movieList: [],
+      recommendMovieList: [],
     }
   },
   // 로드될 때 영화 목록을 불러온다.
@@ -39,10 +40,43 @@ export default {
     .catch(err => {
       console.log(err)
     })
+    this.recommendMovie()
   },
   methods: {
     onDetail: function (movie) {
       this.$router.push({name: 'MovieDetail', query: {movieObj: movie, }})
+    },
+    recommendMovie: function () {
+      if (this.$store.state.isLogin === true) {
+        console.log('로그인 되어 있음 : 유저 추천 영화 목록 불러온다.')
+        axios({
+          url: `${this.$store.state.SERVER_URL}/movies/favorite/list/`,
+          method: 'POST',
+          // token이 있는 경우에만 headers를 전송한다
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('jwt')}`,
+          },
+        })
+        .then(resp => {
+          console.log(resp)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
+      else if (this.$store.state.isLogin === false) {
+        console.log('로그인 X: 8.5 이상으로 불러온다.')
+        axios({
+          url: `${this.$store.state.SERVER_URL}/movies/favorite/list/`,
+          method: 'POST',
+        })
+        .then(resp => {
+          console.log(resp)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     }
   },
 }

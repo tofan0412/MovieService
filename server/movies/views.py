@@ -147,6 +147,4 @@ def favorite_create(request):
 
 @api_view(['POST'])
 def favorite_list(request):
-    # 로그인 되어 있는 경우에는? 사용자의 추천 영화 목록을 기준으로 데이터 전송
-    # 로그인 안한 경우에는? 평점 8.5점 이상 영화를 랜덤으로..
     print(request.user)
