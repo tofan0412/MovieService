@@ -144,7 +144,6 @@ def favorite_create(request):
     return HttpResponse(status=status.HTTP_201_CREATED)
 
 
-
 @api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
@@ -155,9 +154,10 @@ def favorite_list_user(request):
     genre_dict = genres.values()
     genre_id = genre_dict[0]['id']
     
-    genre = Genre.objects.filter(pk=genre_id)
-    movies = genre.movies.all()
-    print(movies)
+    genre = get_object_or_404(Genre, pk=genre_id)
+    movies = genre.movies.order_by('?')[:5]
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
     
 
 @api_view(['POST'])
