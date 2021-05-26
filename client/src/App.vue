@@ -1,7 +1,10 @@
 <template>
   <div id="app" class="container-fluid">
     <div id="nav" class="row justify-content-start align-items-center">
-      <img class="box col-3" :src="imgPath" alt="로고" width="220" height="150">
+      <div class="col-3">
+        <img src="@/assets/images/logo2.png" alt="" width="80px">
+        <img :src="imgPath" alt="로고" height="40px">
+      </div>
       <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
       <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
         <div class="box col-3" v-if="!this.$store.state.isLogin">
@@ -60,7 +63,7 @@ export default {
 }
 #nav {
   padding: 20px;
-  background-color: rgb(44, 40, 98);
+  background-color: rgb(3, 37, 65);
 }
 #nav a {
   font-weight: bold;

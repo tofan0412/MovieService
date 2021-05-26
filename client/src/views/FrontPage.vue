@@ -1,7 +1,7 @@
 <template>
   <div class="main container">
     <div class="row my-5">
-      <h3>이런 영화는 어떠세요?</h3>
+      <h3 class="text-start">당신을 위한 추천 영화</h3>
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -31,8 +31,6 @@
                 </div>
               </div>
             </div>
-            
-            
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -54,11 +52,14 @@
       </div>
     </div> -->
     
-    <div class="row my-5">
-      <h3>최신 영화</h3>
-      <div class="card col-3" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
-        <img :src="movie.image" alt="">
-        <span>{{movie.title}}</span>
+    <h3 class="text-start">최신 영화</h3>
+    <div class="row my-3 justify-content-center bg-dark">
+      
+      <div class="card col-3 movie-card p-1 mtext-white" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
+        <img :src="movie.image" alt="" height="450px">
+        <h5 class="card-title mt-3">{{movie.title}}</h5>
+        
+        
       </div>
     </div>
   </div>
@@ -130,5 +131,9 @@ export default {
 </script>
 
 <style>
-
+.movie-card{
+  background-color: rgb(3, 37, 65);
+  border-radius: 0.45rem;
+  color: white;
+}
 </style>
