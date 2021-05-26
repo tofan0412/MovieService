@@ -1,6 +1,6 @@
 <template>
   <div class="main container">
-    <div class="row">
+    <div class="row my-5">
       <h3>이런 영화는 어떠세요?</h3>
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -10,21 +10,29 @@
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
         </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="@/assets/images/header.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="@/assets/images/header.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="@/assets/images/header.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="@/assets/images/header.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="@/assets/images/header.jpg" class="d-block w-100" alt="...">
+        <div class="container carousel-inner bg-dark text-white">
+          <div 
+            class="col-6 carousel-item" :class="{ active: idx === 0 }" 
+            v-for="(movie, idx) in recommendMovieList" 
+            :key="movie.id" @click="onDetail(movie)"
+          >
+            <div class="row align-items-center justify-content-center">
+              <img class="col-5 p-5" :src="movie.image" alt="..." width="500px" height="650px">
+              <div class="col-5 p-5 text-start">
+                <div class="row">
+                  <div class="col-12">
+                    <h2>{{ movie.title }}</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    {{ movie.overview }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -39,14 +47,14 @@
     </div>
     
     <!-- card 형태로  영화 목록을 출력한다. -->
-    <div class="row">
+    <!-- <div class="row">
       <div class="card col-2" v-for="movie in recommendMovieList" :key="movie.id" @click="onDetail(movie)">
         <img :src="movie.image" alt="">
         <span>{{movie.title}}</span>
       </div>
-    </div>
+    </div> -->
     
-    <div class="row">
+    <div class="row my-5">
       <h3>최신 영화</h3>
       <div class="card col-3" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
         <img :src="movie.image" alt="">
