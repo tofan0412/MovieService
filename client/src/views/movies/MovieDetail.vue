@@ -59,19 +59,22 @@
 
             <div class="video-container" >
               <iframe 
+                class="iframebox mb-3" 
+                v-if="teaser"
                 id="youtube player" 
-                :src="videoURI" 
-                type="text/html" 
-                frameborder="0">
+                :src="videoURI"
+                type="video" 
+                frameborder="0"              
+              >
               </iframe>
             </div>
 
 
             <!-- <label for="reviewTitle">제목</label> -->
-            <textarea name="" id="제목" cols="60" rows="1" v-model.trim="params.title" placeholder="제목:"></textarea>
+            <textarea name="" id="제목" cols="75" rows="1" v-model.trim="params.title" placeholder="제목:"></textarea>
             <br>
             <!-- <label for="reviewContent">내용</label> -->
-            <textarea name="reviewContent" id="reviewContent" cols="60" rows="5" v-model="params.content" placeholder="내용:"></textarea>
+            <textarea name="reviewContent" id="reviewContent" cols="75" rows="5" v-model="params.content" placeholder="내용:"></textarea>
             <br>
             <label for="reviewRank">별점</label>
             <select v-model="params.rank">
@@ -114,15 +117,13 @@ export default {
   },
   methods: {
     Youtube: function () {
-      const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
       const API_URL = 'https://www.googleapis.com/youtube/v3/search'
       const input = this.movie.subtitle + 'trailer'
 
       const params = {
-        key: API_KEY,
+        key: "AIzaSyB17QVL_fP8qY89CTsNQV1Dl3ZWHeRoCzc",
         part: 'snippet',
         type: 'video',
-        maxResults: 1,
         q: input,
       }
       axios({
@@ -265,5 +266,11 @@ export default {
 .reviewCreate{
   border: 2px solid grey;
   border-radius: 0.45rem;
+}
+.iframebox{
+  display: block;
+  border: none;
+  height: 40vh;
+  width: 23vw;
 }
 </style>
