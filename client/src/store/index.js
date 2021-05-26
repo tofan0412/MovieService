@@ -7,9 +7,11 @@ export default new Vuex.Store({
   state: {
     // 로그인 확인 변수
     isLogin: false,
+    userId: 'Anonymous',
     article: {
       type: Object,
     },
+    
     // Server URL 변수
     SERVER_URL: process.env.VUE_APP_SERVER_URL,
   },

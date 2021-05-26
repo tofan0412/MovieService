@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="row fixed-bottom" >
-      <button class="btn btn-primary" @click="onSubmit()">선택 종료</button>
+      <button class="btn btn-primary" @click="onSubmit()">선택 완료</button>
     </div>
   </div>
 </template>
@@ -45,22 +45,27 @@ export default {
       }
     },
     onSubmit: function () {
-      axios({
-        url: `${this.$store.state.SERVER_URL}/movies/favorite/create/`,
-        method: 'POST',
-        data: this.myMovies,
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('jwt')}`,
-        },   
-      })
-      .then(resp => {
-        console.log(resp.status)
-        alert('추천 영화가 등록되었습니다.')
-        this.$router.push({name: 'FrontPage'})
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      if (this.myMovies.length < 3) {
+        alert("3개 이상의 영화를 고르셔야 합니다..")  
+        return
+      } else {
+        axios({
+          url: `${this.$store.state.SERVER_URL}/movies/favorite/create/`,
+          method: 'POST',
+          data: this.myMovies,
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('jwt')}`,
+          },   
+        })
+        .then(resp => {
+          console.log(resp.status)
+          alert('추천 영화가 등록되었습니다.')
+          this.$router.push({name: 'FrontPage'})
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     },
   },
   created: function () {

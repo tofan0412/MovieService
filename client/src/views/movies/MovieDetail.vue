@@ -1,43 +1,74 @@
 <template>
-  <div class="movieDetail">
+  <div class="movieDetail p-3">
     <div class="movie">
-      <h1>영화 디테일입니다.</h1>
-      <h1>{{ $route.query.movieObj.title }}</h1>  
-      <h2>{{ $route.query.movieObj.subtitle }}</h2>  
-      <img :src="$route.query.movieObj.image" alt="" width="400" height="600">
-      <p>개봉일 : {{ $route.query.movieObj.pubDate }}</p>
-      <p>관람객 평점 : {{ $route.query.movieObj.userRating }}</p>
-    </div>
-    <!-- 관람평 목록 출력 -->
-    <ul class="reviewList">
-      <h1>작성한 관람평</h1>
-      <li v-for="rev in reviews" :key="rev.id">
-        {{ rev.id }}
-        {{ rev.title }}
-        {{ rev.content }}
-        <button @click="delReview(rev)" class="del-btn">X</button>
-        <hr>
-      </li>
-    </ul>
-
-    <div class="reviewCreate">
-      <h1>관람평 작성하기</h1>
-      <label for="reviewTitle">제목</label>
-      <input type="text" name="reviewTitle" id="reviewTitle" v-model="params.title">
-      <br>
-      <label for="reviewContent">내용</label>
-      <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" v-model="params.content"></textarea>
-      <br>
-      <label for="reviewRank">별점</label>
-      <select v-model="params.rank">
-        <option value="default">선택</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-      <button @click="onSubmit">관람평 작성</button>
+      <div class="movie-header">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-6 my-3">
+              <img class="movie-image" :src="$route.query.movieObj.image" alt="">
+            </div>
+            <div class="col-6 my-3">
+              <div class="row mb-5">
+                <h1>{{ $route.query.movieObj.title }}</h1>
+                <h3>{{ $route.query.movieObj.subtitle }}</h3> 
+              </div>
+              <div class="row text-start">
+                <p>개봉일 : {{ $route.query.movieObj.pubDate }}</p>
+                <p>사용자 평점 : {{ $route.query.movieObj.userRating }}</p>
+                
+              </div>
+              <div class="row text-start">
+                <h4>개요</h4>
+                <p>{{ $route.query.movieObj.overview }}</p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-6 text-start">
+            <h3>관람객 평점</h3>
+            <div class="row mt-3" v-for="rev in reviews" :key="rev.id">
+              <div class="col-10">
+                <p>
+                <span v-for="index in Number(rev.rank)" :key="index">
+                  <img :src="start_img_path" alt="" width="15px">
+                </span>
+                &nbsp;<strong><span>{{ rev.rank }}</span></strong>
+                </p>
+                <h5>{{ rev.title }}</h5>
+                {{ rev.content }}
+                <p class="text-secondary">{{ rev.user_id }} | {{ rev.created_at }}</p>  
+              </div>
+              <div class="col-2 d-flex justify-content-center align-items-middle">
+                <button v-if="rev.user_id === user_id" class="btn btn-light del-btn" @click="delReview(rev)"
+                >X</button>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="col-6 reviewCreate text-start p-3">
+            <label for="reviewTitle">제목</label>
+            <input type="text" name="reviewTitle" id="reviewTitle" v-model="params.title">
+            <br>
+            <label for="reviewContent">내용</label>
+            <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" v-model="params.content"></textarea>
+            <br>
+            <label for="reviewRank">별점</label>
+            <select v-model="params.rank">
+              <option value="default">선택</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <button @click="onSubmit">관람평 작성</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +86,9 @@ export default {
         content: null,
         rank: null,
       },
+      factor: false,
+      user_id: this.$store.state.userId,
+      start_img_path: require('@/assets/images/star.png'),
     }
   },
   methods: {
@@ -88,35 +122,55 @@ export default {
       .then(resp => {
         console.log(resp)
         this.onLoad()
+        // 비워주자.
+        this.params.title = ''
+        this.params.content = ''
+        this.params.rank = '선택'
       })
       .catch(err => {
         console.log(err)
       })
     },
     delReview: function (rev) {
-      console.log("리뷰 삭제합니다..")
-      axios({
-        method: 'DELETE',
-        url: `${this.$store.state.SERVER_URL}/movies/detail/${rev.id}/review_delete/`,
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('jwt')}`,
-        },
-      })
-      .then(resp => {
-        console.log(resp)
-        this.onLoad()
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      const factor = confirm("관람객 평점을 삭제하시겠습니까?")
+      if (factor) {
+        axios({
+          method: 'DELETE',
+          url: `${this.$store.state.SERVER_URL}/movies/detail/${rev.id}/review_delete/`,
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('jwt')}`,
+          },
+       })
+        .then(resp => {
+          console.log(resp)
+          this.onLoad()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     }
   },
   mounted: function () {
-    console.log('리뷰 목록을 조회합니다.')
     this.onLoad()
   },
 }
 </script>
 
 <style>
+.movie-header{
+  background-color: rgb(44, 40, 98);
+  width: 100%;
+  height: 25%;
+  color: white;
+  border-radius: 0.8rem;
+}
+.movie-image{
+  width: 400px;
+  height: 520px;
+}
+.reviewCreate{
+  border: 2px solid grey;
+  border-radius: 0.45rem;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container-fluid">
     <div id="nav" class="row justify-content-start align-items-center">
-      <img class="box col-3" :src="imgPath" alt="로고" width="220" height="120">
+      <img class="box col-3" :src="imgPath" alt="로고" width="220" height="150">
       <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
       <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
         <div class="box col-3" v-if="!this.$store.state.isLogin">
@@ -31,6 +31,7 @@ export default {
     onLogout: function () {
       localStorage.removeItem('jwt')
       this.$store.state.isLogin = false
+      this.$store.state.userId = ''
       axios.defaults.headers.common['Authorization'] = ``
       this.$router.push({name: "Login"})
     }
@@ -59,11 +60,13 @@ export default {
 }
 #nav {
   padding: 20px;
-  background-color: black;
+  background-color: rgb(44, 40, 98);
 }
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: white;
+  font-size: 25px;
+  text-decoration: none;
 }
 #nav a.router-link-exact-active {
   color: #42b983;

@@ -35,12 +35,33 @@ export default {
       })
       .then(resp => {
         console.log(resp)
+        // 사용자 정보가 DB에 저장되었으므로, 토큰을 발급한 후에 페이지 이동한다.
+        this.authorization()
+      })
+      .catch(err => {
+        //  확인 비밀번호와 일치하지 않는 경우, 이 곳으로 오게 된다.
+        console.log(err)
+      })
+    },
+    authorization: function () {
+      axios({
+        url: `${this.$store.state.SERVER_URL}/accounts/api/token/auth/`,
+        method: 'POST',
+        data: {
+          username: this.credentials.username,
+          password: this.credentials.password,
+        },
+      })
+      .then(resp => {
+        localStorage.setItem('jwt', resp.data.token)
+        this.$store.state.isLogin = true
+        this.$store.state.userId = this.credentials.username
         this.$router.push({name: 'Recommend'})
       })
       .catch(err => {
         console.log(err)
       })
-    }
+    },
   }  
 }
 </script>

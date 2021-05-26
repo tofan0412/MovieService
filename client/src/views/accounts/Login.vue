@@ -50,6 +50,7 @@ export default {
         // login 여부 값을 true로 변경하고, 
         // 모든 axios 요청에 jwt 토큰을 기본적으로 함께 전송한다.
         this.$store.state.isLogin = true
+        this.$store.state.userId = this.credentials.username
         axios.defaults.headers.common['Authorization'] = `JWT ${localStorage.getItem('jwt')}`
         this.$router.push({name: 'FrontPage'})
       })
