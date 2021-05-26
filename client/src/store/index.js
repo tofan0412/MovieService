@@ -1,13 +1,15 @@
+import createPersistedState from "vuex-persistedstate"
 import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  plugins: [
+    createPersistedState()
+  ],
   state: {
     // 로그인 확인 변수
-    isLogin: false,
-    userId: 'Anonymous',
     article: {
       type: Object,
     },
@@ -20,5 +22,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-  }
+  },
+  
 })

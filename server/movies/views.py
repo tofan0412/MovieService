@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -60,13 +61,22 @@ def review_list_create(request, movie_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
+    # return HttpResponse(status=status.)
 
 
 @api_view(['DELETE'])
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_delete(request, review_pk):
+    user = request.user
+    # 본인이 아닌 사용자가 삭제하려고 하는 경우, 반환한다.
     review = get_object_or_404(Review, pk=review_pk)
+    if not (user.username == review.user_id):
+        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+    
+    if user != review.user_id:
+        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
     review.delete()
     return Response({'id': review_pk})
 
@@ -75,10 +85,14 @@ def review_delete(request, review_pk):
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_update(request, review_pk):
+    user = request.user
     review = get_object_or_404(Review, pk=review_pk)
-    # review.delete()
-    serializer = ReviewSerializer(data=request.data)
-    # print(serializer)
+    
+    # 본인이 아니라면 수정할 수 없다.
+    if not (user.username == review.user_id):
+        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+
+    serializer = ReviewSerializer(review, data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data)

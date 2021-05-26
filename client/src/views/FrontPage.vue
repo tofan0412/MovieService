@@ -96,7 +96,7 @@ export default {
     },
     recommendMovie: function () {
       // 사용자가 로그인한 경우: 사용자 선호 장르 기반 추천
-      if (this.$store.state.isLogin === true) {
+      if (localStorage.getItem('jwt')) {
         axios({
           url: `${this.$store.state.SERVER_URL}/movies/favorite/list/user`,
           method: 'POST',
@@ -113,7 +113,7 @@ export default {
         })
       }
       // 사용자가 로그인하지 않은 경우: 평점 기반 추천
-      else if (this.$store.state.isLogin === false) {
+      else if (!localStorage.getItem('jwt')) {
         axios({
           url: `${this.$store.state.SERVER_URL}/movies/favorite/list/anonymousUser`,
           method: 'POST',
