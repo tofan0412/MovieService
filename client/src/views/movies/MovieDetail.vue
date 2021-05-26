@@ -5,21 +5,25 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-6 my-3">
-              <img class="movie-image" :src="$route.query.movieObj.image" alt="">
+              <img class="movie-image" :src="this.movie.image" alt="">
             </div>
             <div class="col-6 my-3">
               <div class="row mb-5">
-                <h1>{{ $route.query.movieObj.title }}</h1>
-                <h3>{{ $route.query.movieObj.subtitle }}</h3> 
+                <h1>{{ this.movie.title }}</h1>
+                <h3>{{ this.movie.subtitle }}</h3> 
               </div>
               <div class="row text-start">
-                <p>개봉일 : {{ $route.query.movieObj.pubDate }}</p>
-                <p>사용자 평점 : {{ $route.query.movieObj.userRating }}</p>
-                
+                <div class="col-10">
+                  <p>개봉일 : {{ this.movie.pubDate }}</p>
+                  <p>사용자 평점 : {{ this.movie.userRating }}</p>
+                </div>
+                <div class="col-2" >
+                  <img :src="like?like_img_path:unlike_img_path" alt="" width="30px;" @click="doLike()">
+                </div>
               </div>
               <div class="row text-start">
                 <h4>개요</h4>
-                <p>{{ $route.query.movieObj.overview }}</p>
+                <p>{{ this.movie.overview }}</p>
               </div>
               
             </div>
@@ -80,15 +84,18 @@ export default {
   name: 'MovieDetail',
   data: function () {
     return {
+      movie: this.$route.query.movieObj,
       reviews: [],
       params: {
         title: null,
         content: null,
         rank: null,
       },
-      factor: false,
+      like: false,
       user_id: this.$store.state.userId,
       start_img_path: require('@/assets/images/star.png'),
+      like_img_path: require('@/assets/images/like.png'),
+      unlike_img_path: require('@/assets/images/unlike.png'),
     }
   },
   methods: {
@@ -149,10 +156,52 @@ export default {
           console.log(err)
         })
       }
+    },
+    doLike: function () {
+      axios({
+        url: `${this.$store.state.SERVER_URL}/movies/like/`,
+        method: 'POST',
+        data: this.movie,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
+      })
+      .then(resp => {
+        // resp.data.status가 202이면 좋아요, 204면 좋아요 취소
+        if (resp.data.status === 202) {
+          this.like = true
+        } else if (resp.data.status === 204) {
+          this.like = false
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    checkLike: function () {
+      axios({
+        url: `${this.$store.state.SERVER_URL}/movies/check/like/`,
+        method: 'POST',
+        data: this.movie,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`,
+        },
+      })
+      .then(resp => {
+        if (resp.data.status === 202) {
+          this.like = true
+        } else if (resp.data.status === 204) {
+          this.like = false
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   },
-  mounted: function () {
+  created: function () {
     this.onLoad()
+    this.checkLike()
   },
 }
 </script>

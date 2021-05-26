@@ -166,3 +166,31 @@ def favorite_list_anonymousUser(request):
     movies = Movie.objects.filter(userRating__gte=8.0).order_by('?')[:5]
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication]) 
+@permission_classes([IsAuthenticated])
+def like(request): 
+    user = request.user
+    movie = get_object_or_404(Movie, pk=request.data['id'])
+    
+    if movie.like_users.filter(pk=user.pk).exists():
+        movie.like_users.remove(user)
+        return JsonResponse({'status': status.HTTP_204_NO_CONTENT})
+    else:
+        movie.like_users.add(user)
+        return JsonResponse({'status': status.HTTP_202_ACCEPTED})
+    
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication]) 
+@permission_classes([IsAuthenticated])
+def check_like(request):
+    user = request.user
+    movie = get_object_or_404(Movie, pk=request.data['id'])
+    
+    if movie.like_users.filter(pk=user.pk).exists():
+        return JsonResponse({'status': status.HTTP_202_ACCEPTED})
+    else:
+        return JsonResponse({'status': status.HTTP_204_NO_CONTENT})

@@ -8,6 +8,8 @@ urlpatterns = [
     path('favorite/create/', views.favorite_create),
     path('favorite/list/user', views.favorite_list_user),
     path('favorite/list/anonymousUser', views.favorite_list_anonymousUser),
+    path('like/', views.like),
+    path('check/like/', views.check_like),
     path('detail/<int:movie_pk>/', views.detail),
     path('detail/<int:movie_pk>/trailer/', views.trailer),
     path('detail/<int:movie_pk>/review_list/', views.review_list),
