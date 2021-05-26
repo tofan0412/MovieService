@@ -35,7 +35,7 @@
           <div class="col-6 text-start">
             <h3>관람객 평점</h3>
             <div class="row mt-3" v-for="rev in reviews" :key="rev.id">
-              <div class="col-10">
+              <div class="col-9">
                 <p>
                 <span v-for="index in Number(rev.rank)" :key="index">
                   <img :src="start_img_path" alt="" width="15px">
@@ -46,7 +46,46 @@
                 {{ rev.content }}
                 <p class="text-secondary">{{ rev.user_id }} | {{ rev.created_at }}</p>  
               </div>
-              <div class="col-2 d-flex justify-content-center align-items-middle">
+              <div class="col-3 d-flex justify-content-center align-items-middle">
+                <button type="button" v-if="rev.user_id === user_id" 
+                  class="btn btn-light update-btn" 
+                  data-bs-toggle="modal" data-bs-target="#exampleModal"
+                  @click="updateReviewValue(rev)">
+                  수정
+                </button> 
+                
+                <!-- 관람평 수정 관련 modal 창.. -->
+                <div class="modal fade" tabindex="-1" id="exampleModal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">관람평 수정하기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <textarea id="updateReviewTitle" v-model.trim="updateReview.title" cols="55" rows="1" placeholder="제목:" style="resize: none;"></textarea>
+                          <br>
+                          <!-- <label for="reviewContent">내용</label> -->
+                          <textarea id="updateReviewContent" v-model.trim="updateReview.content" cols="55" rows="5" placeholder="내용:" style="resize: none;"></textarea>
+                          <br>
+                          <label for="reviewRank">별점</label>
+                          <select v-model="updateReview.rank">
+                            <option value="default">선택</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                          </select>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="onUpdate()">수정하기</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <button v-if="rev.user_id === user_id" class="btn btn-light del-btn" @click="delReview(rev)"
                 >X</button>
               </div>
@@ -103,7 +142,15 @@ export default {
       movie: this.$route.query.movieObj,
       reviews: [],
       teaser: null,
+      // 새로 작성하는 관람평의 내용을 담기 위한 데이터.
       params: {
+        title: null,
+        content: null,
+        rank: null,
+      },
+      // 수정하는 글의 내용을 담기 위한 데이터.
+      updateReview: {
+        id: null,
         title: null,
         content: null,
         rank: null,
@@ -194,6 +241,41 @@ export default {
           console.log(err)
         })
       }
+    },
+    updateReviewValue: function (rev) {
+      // 모달 창 내 제목, 내용을 입력하는 부분을 기존의 내용으로 채워준다.
+      this.updateReview.id = rev.id
+      this.updateReview.title = rev.title
+      this.updateReview.content = rev.content
+      this.updateReview.rank = rev.rank
+    },
+    onUpdate: function () {
+      const review = {
+        id: this.updateReview.id,
+        title: this.updateReview.title,
+        content: this.updateReview.content,
+        rank: this.updateReview.rank,
+      }
+      
+      axios({
+        url: `${this.$store.state.SERVER_URL}/movies/detail/${review.id}/review_update/`,
+        method: 'PUT',
+        data: review,
+      })
+      .then(resp => {
+        console.log(resp)
+        // 업데이트 하였으므로, 다시 관람평 목록을 reload한다.
+        this.updateReview.id = null,
+        this.updateReview.title = null,
+        this.updateReview.content = null,
+        this.updateReview.rank = null,
+        this.onLoad()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+
     },
     doLike: function () {
       axios({

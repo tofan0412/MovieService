@@ -78,8 +78,9 @@ def review_update(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     # review.delete()
     serializer = ReviewSerializer(data=request.data)
+    # print(serializer)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user, review=review)
+        serializer.save()
         return Response(serializer.data)
 
 
@@ -152,7 +153,6 @@ def favorite_list_user(request):
     user = request.user
     genres = user.like_genres.order_by('?')[:1] # 사용자가 선택한 장르 중에서 임의로 하나 불러오기.
     
-    print(len(genres))
     # 만약 사용자가 추천 영화를 선택하지 않았다면? 평점 기반으로 영화를 추천한다.
     if len(genres) == 0:
         movies = Movie.objects.filter(userRating__gte=8.0).order_by('?')[:5]
