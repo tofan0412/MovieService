@@ -53,7 +53,20 @@
               <hr>
             </div>
           </div>
-          <div class="col-6 reviewCreate text-start p-3">
+          <div class="col-6 reviewCreate and youtube text-start p-3">
+
+            <!-- 유튜브 영상 출력 부분 -->
+
+            <div class="video-container" >
+              <iframe 
+                id="youtube player" 
+                :src="videoURI" 
+                type="text/html" 
+                frameborder="0">
+              </iframe>
+            </div>
+
+
             <!-- <label for="reviewTitle">제목</label> -->
             <textarea name="" id="제목" cols="60" rows="1" v-model.trim="params.title" placeholder="제목:"></textarea>
             <br>
@@ -86,6 +99,7 @@ export default {
     return {
       movie: this.$route.query.movieObj,
       reviews: [],
+      teaser: null,
       params: {
         title: null,
         content: null,
@@ -99,6 +113,29 @@ export default {
     }
   },
   methods: {
+    Youtube: function () {
+      const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
+      const API_URL = 'https://www.googleapis.com/youtube/v3/search'
+      const input = this.movie.subtitle + 'trailer'
+
+      const params = {
+        key: API_KEY,
+        part: 'snippet',
+        type: 'video',
+        maxResults: 1,
+        q: input,
+      }
+      axios({
+        method: 'GET',
+        url: API_URL,
+        params,
+      }).then(resp => {
+        this.teaser  = resp.data.items[0]
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     onLoad: function () {
       axios({
         url: `${this.$store.state.SERVER_URL}/movies/detail/${this.$route.query.movieObj.id}/review_list/`,
@@ -199,9 +236,16 @@ export default {
       })
     }
   },
+    computed: {
+      videoURI: function () {
+        const videoId = this.teaser.id.videoId
+        return `https://www.youtube.com/embed/${videoId}`
+      }
+    },
   created: function () {
     this.onLoad()
     this.checkLike()
+    this.Youtube()
   },
 }
 </script>
