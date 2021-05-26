@@ -11,7 +11,8 @@
           <router-link :to="{name: 'Login'}">Login</router-link> | 
           <router-link :to="{name: 'Signup'}">Signup</router-link>
         </div>
-        <div class="box col-2" v-else>
+        <div class="box col-4" v-else>
+          <router-link :to="{name: 'Recommend'}">Recommend 설정</router-link> | 
           <router-link r-link to="#" @click.native="onLogout">Logout</router-link>
         </div>
     </div>
