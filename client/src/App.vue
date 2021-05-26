@@ -1,11 +1,11 @@
 <template>
   <div id="app" class="container-fluid">
     <div id="nav" class="row justify-content-start align-items-center">
-      <div class="col-2">
+      <div class="col-2" @click="toMainPage()" style="cursor: pointer;">
         <img src="@/assets/images/logo2.png" alt="" width="80px">
         <img :src="imgPath" alt="로고" height="40px">
       </div>
-      <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
+      <router-link class="box col-2" :to="{name: 'FrontPage'}">Movies</router-link>
       <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
       <!-- 로그인 하지 않은 경우 -->
       <div class="box col-2" v-if="!isLogin">
@@ -55,6 +55,9 @@ export default {
         this.isLogin = false
       }
     },
+    toMainPage: function () {
+      this.$router.push({name: 'FrontPage'})
+    }
   },
   updated: function () {
     this.checkLogin()
