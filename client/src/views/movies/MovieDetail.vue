@@ -208,7 +208,7 @@ export default {
 
 <style>
 .movie-header{
-  background-color: rgb(44, 40, 98);
+  background-color: rgb(3, 37, 65);
   width: 100%;
   height: 25%;
   color: white;
