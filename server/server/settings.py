@@ -65,6 +65,7 @@ MIDDLEWARE = [
 # 1. 특정 Origin만 선택적으로 허용
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
+    "http://localhost:8081",
 ]
 
 # 2. 모든 Origin 허용

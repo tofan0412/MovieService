@@ -151,13 +151,22 @@ def favorite_list_user(request):
     # 사용자가 선택한 genre 기반으로 영화 데이터를 추출한다.
     user = request.user
     genres = user.like_genres.order_by('?')[:1] # 사용자가 선택한 장르 중에서 임의로 하나 불러오기.
-    genre_dict = genres.values()
-    genre_id = genre_dict[0]['id']
     
-    genre = get_object_or_404(Genre, pk=genre_id)
-    movies = genre.movies.order_by('?')[:5]
-    serializer = MovieSerializer(movies, many=True)
-    return Response(serializer.data)
+    print(len(genres))
+    # 만약 사용자가 추천 영화를 선택하지 않았다면? 평점 기반으로 영화를 추천한다.
+    if len(genres) == 0:
+        movies = Movie.objects.filter(userRating__gte=8.0).order_by('?')[:5]
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+    # 사용자가 장르를 선택한 경우에는, 장르 기반으로 영화를 추천한다.
+    else:
+        genre_dict = genres.values()
+        genre_id = genre_dict[0]['id']
+        
+        genre = get_object_or_404(Genre, pk=genre_id)
+        movies = genre.movies.order_by('?')[:5]
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
     
 
 @api_view(['POST'])
