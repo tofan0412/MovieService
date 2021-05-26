@@ -54,11 +54,11 @@
             </div>
           </div>
           <div class="col-6 reviewCreate text-start p-3">
-            <label for="reviewTitle">제목</label>
-            <input type="text" name="reviewTitle" id="reviewTitle" v-model="params.title">
+            <!-- <label for="reviewTitle">제목</label> -->
+            <textarea name="" id="제목" cols="60" rows="1" v-model.trim="params.title" placeholder="제목:"></textarea>
             <br>
-            <label for="reviewContent">내용</label>
-            <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" v-model="params.content"></textarea>
+            <!-- <label for="reviewContent">내용</label> -->
+            <textarea name="reviewContent" id="reviewContent" cols="60" rows="5" v-model="params.content" placeholder="내용:"></textarea>
             <br>
             <label for="reviewRank">별점</label>
             <select v-model="params.rank">
@@ -69,7 +69,7 @@
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
-            <button @click="onSubmit">관람평 작성</button>
+            <button @click="onSubmit" class="btn btn-primary">관람평 작성</button>
           </div>
         </div>
       </div>

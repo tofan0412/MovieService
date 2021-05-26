@@ -1,15 +1,14 @@
 <template>
   <div class="article">
     <div>       
-    <form>
-      <p><h2>제목: {{ this.article.title }}</h2><p>
-      <p><h2>내용: {{ this.article.content }}</h2><p>
-      <p><h5>생성시간: {{ this.article.created_at }}</h5><p>
-      <p><h5>수정시간: {{ this.article.updated_at }}</h5><p>
+    <form class="mb-3">
+      <p><h2 align="center">제목: {{ this.article.title }}</h2><p>
+      <p><h2 align="center">내용: {{ this.article.content }}</h2><p>
       <button @click="toUpdatePage"  class="btn btn-outline-secondary">게시글 수정</button>
       <button @click="onDelete"  class="btn btn-outline-secondary">게시글 삭제</button>
-      
-      <div class="mb-3">
+      <p><h5 align="center">생성시간: {{ this.article.created_at }} 수정시간: {{ this.article.updated_at }}</h5><p>
+
+      <div class="mb-4">
         <h3>댓글 작성</h3>
         <input name="comment" id="comment" v-model="comment_content">
         <button @click="commentSubmit">작성</button>
