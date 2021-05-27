@@ -1,6 +1,6 @@
 <template>
   <div class="article my-5">
-    <div class="container">
+    <div class="container w-20">
 
       <div>
         <h2 class="text-start" align="start"><strong>{{ this.article.title }}</strong></h2>      
@@ -10,7 +10,7 @@
         <div class="col-1 text-start username">
           {{ this.article.user }}
         </div>
-        <div class="col-2 text-start" style="color: lightslategray;">
+        <div class="col-3 text-start" style="color: lightslategray;">
           last update: {{ this.article.updated_at.substring(0, 10) }}
         </div>
       </div>
@@ -24,18 +24,16 @@
       </div>   
 
       <div class="row mt-3">
-        <div class="col-auto">
+        <div class="col-auto" v-if="article.user === user_id">
           <button type="button"
-            v-if="article.user === user_id"
             @click="$router.push({name: 'Update'})"  
             class="btn btn-outline-secondary">
             게시글 수정
           </button>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" v-if="article.user === user_id">
           <form>                
-            <button type="button"              
-              v-if="article.user === user_id"
+            <button type="button"                            
               @click="onDelete()"  
               class="btn btn-outline-secondary">
               게시글 삭제
@@ -46,31 +44,44 @@
           <button class="btn btn-outline-secondary" @click="$router.push({name: 'Community'})">목록으로</button>
         </div>
       </div>
-    </div>
+    
 
-    <!-- 댓글 부분 --> 
-    <div class="mb-4">
-      <h3 >댓글 작성</h3>
-      <input name="comment" id="comment" v-model="comment_content"><button @click="commentSubmit()" class="btn btn-outline-secondary">작성</button>        
-    </div>
-
-    <div class="container">
-      <div class="card">
-          <div class="card-body">
-            <div v-for="comment in comments" :key="comment.id">
-              <h6 align="start"> {{ comment.user }} : {{ comment.content }}
-                생성시간: {{ comment.created_at }} 수정시간: {{ comment.updated_at }}
-                <button 
-                  v-if="comment.user === user_id"
-                  @click="onDelete_Comment(comment)" 
-                  class="btn btn-outline-secondary">
-                  X
-                </button>
-              </h6>
-            </div>   
-          </div> 
+    <!-- 댓글 목록 출력 부분 -->
+    
+    <div class="row text-start mt-5" style="font-size: 25px;">
+      <div class="col-12">
+        comments (<span style="color: mediumaquamarine;"><strong>{{ comments.length }}</strong></span>)
       </div>
     </div>
+    <hr>
+
+    <div class="container mt-3" v-if="comments">
+      <div class="row align-items-center" v-for="comment in comments" :key="comment.id">
+          <div class="col-9 text-start" >
+            <p><strong>{{ comment.user }}</strong></p>
+            <p>{{ comment.content }}</p>
+            <p style="color: lightslategray; font-size: 0.8rem;">{{ comment.created_at.substring(0, 10) }}</p>
+          </div>
+          <div class="col-3 commentDelBtn">
+            <span style="color: mediumaquamarine; cursor: pointer;" v-if="comment.user === user_id" @click="onDelete_Comment()">
+              삭제
+            </span>
+          </div>
+          <hr>
+      </div>
+    </div>
+
+    <!-- 댓글 작성창 부분 --> 
+    <div class="row mt-3">
+      <textarea cols="70" rows="5" id="comment" v-model="comment_content" style="resize: none;" />
+    </div>
+    <div class="row mt-2">      
+      <button @click="commentSubmit()" class="btn btn-outline-secondary">작성</button>
+    </div>
+    
+    <!-- end of container -->
+    </div>
+  <!-- end of body -->
   </div>
 </template>
 
@@ -166,7 +177,12 @@ export default {
       })
     },
     onDelete_Comment: function (comment) {
-      console.log(comment)
+      // 사용자 검증
+      const conf = confirm('삭제하시겠습니까?')
+      if (!conf) {
+        return
+      }
+
       axios({
         url: `${this.$store.state.SERVER_URL}/community/${comment.id}/comment_delete/`,
         method: 'DELETE',
@@ -189,6 +205,12 @@ export default {
 <style>
 .username{
   color: dodgerblue;
-  font-size: 20px;
+  font-size: 25px;
+}
+.container {
+  width: 900px;
+}
+.commentDelBtn:hover{
+  
 }
 </style>
