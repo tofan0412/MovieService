@@ -96,6 +96,9 @@ export default {
   },
   methods: {
     handleScroll: function () {
+      if (this.pageNum === 20) { 
+        return
+      }
       // console.log('스크롤..')
       const {scrollTop, clientHeight, scrollHeight} = document.documentElement
       // console.log(scrollTop, clientHeight, scrollHeight)

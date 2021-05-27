@@ -18,14 +18,15 @@ import requests
 def index(request):
     movies = Movie.objects.all()
     paginator = Paginator(movies, 10)
-    print(paginator)
     page_number = request.GET.get('page')
     
     movies = paginator.get_page(page_number)
-    if movies.has_next:
-        pass
+    if movies.end_index == request.GET.get('page'):
+        print('마지막 페이지 입니다.')
+
     serializers = MovieSerializer(movies, many=True)
     return Response(serializers.data)
+    
 
 
 @api_view(['GET'])
