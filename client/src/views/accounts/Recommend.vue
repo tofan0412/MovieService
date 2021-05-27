@@ -17,7 +17,7 @@
     </div>
 
     <div class="mySelectList">
-      <div class="d-flex align-items-center px-2" v-for="myMovie in myMoviesObj" :key="myMovie.id" @mousemove="mouseOver($event.target)" @mouseleave="mouseLeave($event.target)">
+      <div class="d-flex align-items-center px-2 demo-01" v-for="myMovie in myMoviesObj" :key="myMovie.id">
         {{ myMovie.title }}
         <hr>
       </div>
@@ -127,5 +127,9 @@ export default {
   overflow-y: scroll;
   width: 10%;
   height: 30%;
+}
+.demo-01:hover{
+  background-color: grey;
+  color: white;
 }
 </style>

@@ -2,6 +2,9 @@
   <div class="movieDetail p-3">
     <div class="movie">
       <div class="movie-header">
+        <div class="d-flex justify-content-start">
+          <button class="btn btn-primary m-2" @click="$router.push({name: 'FrontPage'})">목록으로</button>
+        </div>
         <div class="container">
           <div class="row align-items-center">
             <div class="col-6 my-3">
@@ -404,7 +407,7 @@ export default {
 .movie-header{
   background-color: rgb(3, 37, 65);
   width: 100%;
-  height: 25%;
+  height: 30%;
   color: white;
   border-radius: 0.8rem;
 }

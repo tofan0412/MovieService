@@ -17,7 +17,7 @@
             :key="movie.id" @click="onDetail(movie)"
           >
             <div class="row align-items-center justify-content-center">
-              <img class="col-5 p-5" :src="movie.image" alt="..." width="500px" height="650px">
+              <img class="col-5 p-5 recommendMovieImg" :src="movie.image" alt="..." width="500px" height="650px" style="cursor: pointer;">
               <div class="col-5 p-5 text-start">
                 <div class="row">
                   <div class="col-12">
@@ -55,7 +55,7 @@
     <h3 class="text-start">최신 영화</h3>
     <div class="row my-3 bg-dark">
       
-      <div class="card col-3 movie-card p-1" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
+      <div class="card col-3 movie-card p-1 demo-01" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
         <img :src="movie.image" alt="" height="450px">
         <h5 class="card-title mt-3">{{movie.title}}</h5>
         
@@ -161,5 +161,16 @@ export default {
   background-color: rgb(3, 37, 65);
   border-radius: 0.45rem;
   color: white;
+}
+.movie-card > img{
+  cursor: pointer;
+}
+.demo-01:hover{
+  transition: all .3s ease;
+  background-color: lightslategray;
+}
+.recommendMovieImg:hover{
+  transition: .3s ease;
+  background-color: lightslategrey;
 }
 </style>

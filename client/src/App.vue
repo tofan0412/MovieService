@@ -5,24 +5,26 @@
         <img src="@/assets/images/logo2.png" alt="" width="80px">
         <img :src="imgPath" alt="로고" height="40px">
       </div>
-      <router-link class="box col-2" :to="{name: 'FrontPage'}">Movies</router-link>
-      <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
+      <router-link class="box col-2" :to="{name: 'FrontPage'}" @click.native="show = true">Movies</router-link>
+      <router-link class="box col-2" :to="{name: 'Community'}" @click.native="show = true">Community</router-link>
       <!-- 로그인 하지 않은 경우 -->
       <div class="box col-2" v-if="!isLogin">
-        <router-link :to="{name: 'Signup'}">Signup</router-link>
+        <router-link :to="{name: 'Signup'}" @click.native="show = true">Signup</router-link>
       </div>
       <div class="box col-2" v-if="!isLogin">
-        <router-link :to="{name: 'Login'}">Login</router-link> 
+        <router-link :to="{name: 'Login'}" @click.native="show = true">Login</router-link> 
       </div>
       <!-- 로그인한 경우 -->
       <div class="box col-2" v-if="isLogin">
-        <router-link :to="{name: 'Recommend'}">Recommend</router-link>
+        <router-link :to="{name: 'Recommend'}" @click.native="show = true">Recommend</router-link>
       </div>
       <div class="box col-2" v-if="isLogin">
         <router-link r-link to="#" @click.native="onLogout">Logout</router-link>
       </div>
     </div>
-    <router-view class="mt-5"/>
+    <transition name="slide-fade" v-if="show">
+      <router-view class="mt-5"/>
+    </transition>
   </div>
 </template>
 
@@ -35,6 +37,7 @@ export default {
     return {
       imgPath: require('@/assets/images/logo.png'),
       isLogin: '',
+      show: false,
     }
   },
   methods: {
@@ -88,5 +91,16 @@ export default {
 }
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+.slide-fade-enter-active{
+  transition: all .2s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
