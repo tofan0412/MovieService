@@ -1,27 +1,66 @@
 <template>
   <div class="article">
-    <div>       
-    <form class="mb-3">
-      <p><h2 align="center">제목: {{ this.article.title }}</h2><p>
-      <p><h2 align="center">내용: {{ this.article.content }}</h2><p>
-      <button @click="toUpdatePage"  class="btn btn-outline-secondary">게시글 수정</button>
-      <button @click="onDelete"  class="btn btn-outline-secondary">게시글 삭제</button>
-      <p><h5 align="center">생성시간: {{ this.article.created_at }} 수정시간: {{ this.article.updated_at }}</h5><p>
 
+    <div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" align="start">제목: {{ this.article.title }}</h2>      
+        </div>
+        <div class="card-body">
+            <h2 align="start">내용: {{ this.article.content }}</h2>    
+        </div>     
+        <div class="card-body">
+            <h5 align="left">생성시간: {{ this.article.created_at }}</h5>  
+            <h5 align="left">수정시간: {{ this.article.updated_at }}</h5>
+        </div>   
+    </div>
+    <div class="row mt-3">
+      <!-- <div class="col-auto mr-auto"></div> -->
+      <div class="col-auto">
+          <button @click="toUpdatePage"  class="btn btn-outline-secondary">게시글 수정</button>
+      </div>
+      <div class="col-auto mb-5">
+          <form>                
+              <button @click="onDelete"  class="btn btn-outline-secondary">게시글 삭제</button>
+          </form>
+      </div>
+       </div>
+    </div>
+
+    <div class="mb-4">
+        <h3 >댓글 작성</h3>
+        <input name="comment" id="comment" v-model="comment_content"><button @click="commentSubmit" class="btn btn-outline-secondary">작성</button>        
+    </div>
+
+    <div class="container">
+    <div class="card">
+        <div class="card-body">
+           <div v-for="comment in comments" :key="comment.id">
+         <h6 align="start"> {{ comment.user }} : {{ comment.content }}
+          생성시간: {{ comment.created_at }} 수정시간: {{ comment.updated_at }}
+          <button @click="onDelete_Comment(comment)" class="btn btn-outline-secondary">X</button></h6>
+      </div>   
+        </div> 
+    </div>
+    </div>
+
+
+
+<!-- 
+    <form class="mb-3">
       <div class="mb-4">
         <h3>댓글 작성</h3>
         <input name="comment" id="comment" v-model="comment_content">
-        <button @click="commentSubmit">작성</button>
+        <button @click="commentSubmit" class="btn btn-outline-secondary">작성</button>
       </div>
 
-      
       <div v-for="comment in comments" :key="comment.id">
         <p>{{ comment.user }} : {{ comment.content }}
         생성시간: {{ comment.created_at }} 수정시간: {{ comment.updated_at }}
-        <button @click="onDelete_Comment(comment)">X</button></p>
+        <button @click="onDelete_Comment(comment)" class="btn btn-outline-secondary">X</button></p>
       </div>
-    </form>
-    </div>
+    </form> -->
+    
   </div>
 </template>
 

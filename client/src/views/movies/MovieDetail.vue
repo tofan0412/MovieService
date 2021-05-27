@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     Youtube: function () {
-      const API_URL = 'https://www.googleapis.com/youtube/v3/search'
+      const API_URL = 'https://www.googleapis.com/youtube/v3/search'      
       const input = this.movie.subtitle + 'trailer'
 
       const params = {
