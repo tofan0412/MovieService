@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from server import movies
 import requests
 import json

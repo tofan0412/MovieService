@@ -74,12 +74,16 @@ export default {
     return {
       movieList: [],
       recommendMovieList: [],
+      pageNum: 2,
     }
   },
   // 로드될 때 영화 목록을 불러온다.
   created: function () {
+    // 스크롤 이벤트 감지..
+    window.addEventListener('scroll', this.handleScroll)
+
     axios({
-      url: `${this.$store.state.SERVER_URL}/movies/`,
+      url: `${this.$store.state.SERVER_URL}/movies?page=1`,
       method: 'GET',
     })
     .then(resp => {
@@ -91,12 +95,34 @@ export default {
     this.recommendMovie()
   },
   methods: {
+    handleScroll: function () {
+      if (this.pageNum === 20) { 
+        return
+      }
+      // console.log('스크롤..')
+      const {scrollTop, clientHeight, scrollHeight} = document.documentElement
+      // console.log(scrollTop, clientHeight, scrollHeight)
+      if (scrollHeight - scrollTop -1 < clientHeight) {
+        axios({
+          url: `${this.$store.state.SERVER_URL}/movies?page=${this.pageNum}`,
+          method: 'GET',
+        })
+        .then(resp => { 
+          // 마지막에 갖다 붙이기만 하면 된다.
+          this.movieList.push(... resp.data)
+          this.pageNum++
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
+    },
     onDetail: function (movie) {
       this.$router.push({name: 'MovieDetail', query: {movieObj: movie, }})
     },
     recommendMovie: function () {
       // 사용자가 로그인한 경우: 사용자 선호 장르 기반 추천
-      if (this.$store.state.isLogin === true) {
+      if (localStorage.getItem('jwt')) {
         axios({
           url: `${this.$store.state.SERVER_URL}/movies/favorite/list/user`,
           method: 'POST',
@@ -113,7 +139,7 @@ export default {
         })
       }
       // 사용자가 로그인하지 않은 경우: 평점 기반 추천
-      else if (this.$store.state.isLogin === false) {
+      else if (!localStorage.getItem('jwt')) {
         axios({
           url: `${this.$store.state.SERVER_URL}/movies/favorite/list/anonymousUser`,
           method: 'POST',

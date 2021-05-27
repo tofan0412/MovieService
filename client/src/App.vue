@@ -1,19 +1,26 @@
 <template>
   <div id="app" class="container-fluid">
     <div id="nav" class="row justify-content-start align-items-center">
-      <div class="col-3">
+      <div class="col-2" @click="toMainPage()" style="cursor: pointer;">
         <img src="@/assets/images/logo2.png" alt="" width="80px">
         <img :src="imgPath" alt="로고" height="40px">
       </div>
-      <router-link class="box col-2" :to="{name: 'FrontPage'}">Main</router-link>
+      <router-link class="box col-2" :to="{name: 'FrontPage'}">Movies</router-link>
       <router-link class="box col-2" :to="{name: 'Community'}">Community</router-link>
-        <div class="box col-3" v-if="!this.$store.state.isLogin">
-          <router-link :to="{name: 'Login'}">Login</router-link> | 
-          <router-link :to="{name: 'Signup'}">Signup</router-link>
-        </div>
-        <div class="box col-2" v-else>
-          <router-link r-link to="#" @click.native="onLogout">Logout</router-link>
-        </div>
+      <!-- 로그인 하지 않은 경우 -->
+      <div class="box col-2" v-if="!isLogin">
+        <router-link :to="{name: 'Signup'}">Signup</router-link>
+      </div>
+      <div class="box col-2" v-if="!isLogin">
+        <router-link :to="{name: 'Login'}">Login</router-link> 
+      </div>
+      <!-- 로그인한 경우 -->
+      <div class="box col-2" v-if="isLogin">
+        <router-link :to="{name: 'Recommend'}">Recommend</router-link>
+      </div>
+      <div class="box col-2" v-if="isLogin">
+        <router-link r-link to="#" @click.native="onLogout">Logout</router-link>
+      </div>
     </div>
     <router-view class="mt-5"/>
   </div>
@@ -27,6 +34,7 @@ export default {
   data: function () {
     return {
       imgPath: require('@/assets/images/logo.png'),
+      isLogin: '',
     }
   },
   methods: {
@@ -34,18 +42,25 @@ export default {
     onLogout: function () {
       localStorage.removeItem('jwt')
       this.$store.state.isLogin = false
-      this.$store.state.userId = ''
+      this.$store.state.userId = 'Anonymous'
       axios.defaults.headers.common['Authorization'] = ``
       this.$router.push({name: "Login"})
+    },
+    checkLogin: function () {
+      const jwt = localStorage.getItem('jwt')
+
+      if (jwt) {
+        this.isLogin = true
+      } else {
+        this.isLogin = false
+      }
+    },
+    toMainPage: function () {
+      this.$router.push({name: 'FrontPage'})
     }
   },
-  created: function () {
-    const jwt = localStorage.getItem('jwt')
-
-    if (jwt) {
-      this.$store.state.isLogin = true
-      // axios.defaults.headers.common['Authorization'] = `${jwt}` // 자식으로 등록 안하면, 소용없나..?
-    }
+  updated: function () {
+    this.checkLogin()
   }
 }
 </script>

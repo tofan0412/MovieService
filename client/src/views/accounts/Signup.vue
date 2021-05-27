@@ -54,8 +54,6 @@ export default {
       })
       .then(resp => {
         localStorage.setItem('jwt', resp.data.token)
-        this.$store.state.isLogin = true
-        this.$store.state.userId = this.credentials.username
         this.$router.push({name: 'Recommend'})
       })
       .catch(err => {

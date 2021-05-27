@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.core import paginator
+from django.core.paginator import Paginator
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -11,11 +14,19 @@ from .models import Genre, Movie, Review
 import requests
 
 
-@api_view(['GET'])  #일단 GET방식 테스트
+@api_view(['GET'])
 def index(request):
     movies = Movie.objects.all()
+    paginator = Paginator(movies, 10)
+    page_number = request.GET.get('page')
+    
+    movies = paginator.get_page(page_number)
+    if movies.end_index == request.GET.get('page'):
+        print('마지막 페이지 입니다.')
+
     serializers = MovieSerializer(movies, many=True)
     return Response(serializers.data)
+    
 
 
 @api_view(['GET'])
@@ -60,13 +71,22 @@ def review_list_create(request, movie_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
+    # return HttpResponse(status=status.)
 
 
 @api_view(['DELETE'])
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_delete(request, review_pk):
+    user = request.user
+    # 본인이 아닌 사용자가 삭제하려고 하는 경우, 반환한다.
     review = get_object_or_404(Review, pk=review_pk)
+    if not (user.username == review.user_id):
+        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+    
+    if user != review.user_id:
+        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
     review.delete()
     return Response({'id': review_pk})
 
@@ -75,11 +95,16 @@ def review_delete(request, review_pk):
 @authentication_classes([JSONWebTokenAuthentication]) 
 @permission_classes([IsAuthenticated]) 
 def review_update(request, review_pk):
+    user = request.user
     review = get_object_or_404(Review, pk=review_pk)
-    # review.delete()
-    serializer = ReviewSerializer(data=request.data)
+    
+    # 본인이 아니라면 수정할 수 없다.
+    if not (user.username == review.user_id):
+        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+
+    serializer = ReviewSerializer(review, data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user, review=review)
+        serializer.save()
         return Response(serializer.data)
 
 
@@ -152,7 +177,6 @@ def favorite_list_user(request):
     user = request.user
     genres = user.like_genres.order_by('?')[:1] # 사용자가 선택한 장르 중에서 임의로 하나 불러오기.
     
-    print(len(genres))
     # 만약 사용자가 추천 영화를 선택하지 않았다면? 평점 기반으로 영화를 추천한다.
     if len(genres) == 0:
         movies = Movie.objects.filter(userRating__gte=8.0).order_by('?')[:5]

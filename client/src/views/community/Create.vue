@@ -64,7 +64,13 @@ export default {
     }
   },
   created: function () {
-  
+    // 게시글 작성하기 전에, 로그인되어 있는지를 확인한다.
+    if (localStorage.getItem('jwt')) {
+      // 로그인이 되어 있으므로, 게시글을 작성할 수 있다.
+    } else {
+      alert('로그인이 필요한 기능입니다.')
+      this.$router.push({name: 'Login'})
+    }
   },
   mounted: function () {
 
