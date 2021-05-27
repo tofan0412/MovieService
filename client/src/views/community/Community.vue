@@ -2,14 +2,19 @@
   <div class="community">
     <h1>SSAFY BOX 사용자 게시판</h1>
     <h2 align="right"><router-link :to="{name: 'Create'}">글 작성하기</router-link></h2>
-    <!-- <div 
+    <div class="d-flex flex-column justify-content-center align-items-center" v-if="articles.length === 0" style="height: 500px;">
+      <div class="m-2"><img src="@/assets/images/caution.png" alt=""></div>
+      <div class="m-2"><h3>작성된 게시글이 존재하지 않습니다.</h3></div>
+      <div class="m-2"><button class="btn btn-primary" @click="moveToCreate()">게시글 작성하기</button></div>
+    </div>
+    <div 
       v-for="article in articles" 
       :key="article.id" 
       @click="onDetail(article)">
         {{ article.id }}
         {{ article.title }}
         {{ article.content }}
-    </div> -->
+    </div>
 
     <div class="overflow-auto">
       <b-table
@@ -77,7 +82,10 @@ export default {
     console.log(index)  // index값 사용은 해야해서 넣음 추후 안 보이게 해도 될 듯
     this.$store.state.article = record
     this.$router.push({name: 'Article'})
-  }
+    },
+    moveToCreate: function () {
+      this.$router.push({name: 'Create'})
+    }
   },
   computed: {
     rows() {

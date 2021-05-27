@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.core import paginator
+from django.core.paginator import Paginator
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -12,9 +14,16 @@ from .models import Genre, Movie, Review
 import requests
 
 
-@api_view(['GET'])  #일단 GET방식 테스트
+@api_view(['GET'])
 def index(request):
     movies = Movie.objects.all()
+    paginator = Paginator(movies, 10)
+    print(paginator)
+    page_number = request.GET.get('page')
+    
+    movies = paginator.get_page(page_number)
+    if movies.has_next:
+        pass
     serializers = MovieSerializer(movies, many=True)
     return Response(serializers.data)
 

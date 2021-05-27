@@ -74,12 +74,16 @@ export default {
     return {
       movieList: [],
       recommendMovieList: [],
+      pageNum: 2,
     }
   },
   // 로드될 때 영화 목록을 불러온다.
   created: function () {
+    // 스크롤 이벤트 감지..
+    window.addEventListener('scroll', this.handleScroll)
+
     axios({
-      url: `${this.$store.state.SERVER_URL}/movies/`,
+      url: `${this.$store.state.SERVER_URL}/movies?page=1`,
       method: 'GET',
     })
     .then(resp => {
@@ -91,6 +95,25 @@ export default {
     this.recommendMovie()
   },
   methods: {
+    handleScroll: function () {
+      // console.log('스크롤..')
+      const {scrollTop, clientHeight, scrollHeight} = document.documentElement
+      // console.log(scrollTop, clientHeight, scrollHeight)
+      if (scrollHeight - scrollTop -1 < clientHeight) {
+        axios({
+          url: `${this.$store.state.SERVER_URL}/movies?page=${this.pageNum}`,
+          method: 'GET',
+        })
+        .then(resp => { 
+          // 마지막에 갖다 붙이기만 하면 된다.
+          this.movieList.push(... resp.data)
+          this.pageNum++
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
+    },
     onDetail: function (movie) {
       this.$router.push({name: 'MovieDetail', query: {movieObj: movie, }})
     },

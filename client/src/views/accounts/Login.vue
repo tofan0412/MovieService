@@ -14,7 +14,7 @@
 
         <div class="row justify-content-between align-items-center mt-3">
           <div class="col-12 text-start">
-            <input type="checkbox" @click="rememberMe()" :checked="check">&nbsp;remember me
+            <input type="checkbox" @click="rememberMe($event)" :checked="check">&nbsp;remember me
           </div>
           <div class="col-12">
             <button id="loginBtn" class="btn btn-lg btn-primary w-100 mt-5" @click="onLogin()">로그인</button>
@@ -67,9 +67,15 @@ export default {
         alert('아이디 혹은 비밀번호를 잘못 입력하였습니다.')
       })
     },
-    rememberMe: function () {
+    rememberMe: function (event) {
+      if (this.credentials.username === null || this.credentials.username === ''){
+        // 사용자가 아이디를 공란으로 둔 상태에서 체크하면
+        event.preventDefault()
+        alert('아이디를 먼저 입력해 주세요.')
+        return
+      }
+      
       this.check = !this.check
-
       if (this.check) {
         const user_id = this.credentials.username
         localStorage.setItem('userId', user_id)
