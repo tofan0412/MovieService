@@ -42,8 +42,8 @@ def article_update_delete(request, article_pk):
             serializer.save()
             return Response(serializer.data)
     else:
-        if user != article.user_id:
-            return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+        if user != article.user:
+            return HttpResponse(status=status.HTTP_403_FORBIDDEN)
 
         article.delete()
         return Response({'id':article_pk})
@@ -77,8 +77,8 @@ def comment_delete(request, comment_pk):
     if not (user.username == comment.user_id):
         return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
 
-    if user != comment.user_id:
-        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+    if user != comment.user: 
+        return HttpResponse(status=status.HTTP_403_FORBIDDEN)
 
     comment.delete()
     return Response({'id': comment_pk})
