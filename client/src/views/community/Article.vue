@@ -63,7 +63,7 @@
             <p style="color: lightslategray; font-size: 0.8rem;">{{ comment.created_at.substring(0, 10) }}</p>
           </div>
           <div class="col-3 commentDelBtn text-end">
-            <span style="color: mediumaquamarine; cursor: pointer;" v-if="comment.user === user_id" @click="onDelete_Comment()">
+            <span style="color: mediumaquamarine; cursor: pointer;" v-if="comment.user === user_id" @click="onDelete_Comment(comment)">
               삭제
             </span>
           </div>
@@ -182,7 +182,7 @@ export default {
       if (!conf) {
         return
       }
-
+      console.log(comment)
       axios({
         url: `${this.$store.state.SERVER_URL}/community/${comment.id}/comment_delete/`,
         method: 'DELETE',

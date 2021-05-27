@@ -24,9 +24,9 @@
           {{ article.created_at.substring(0, 10).split('-')[1] }}.
           {{ article.created_at.substring(0, 10).split('-')[2] }}
         </div>
-        <div class="col-9 text-start">
+        <div class="col-9 text-start single">
           <p><strong><h3>{{ article.title }}</h3></strong></p>
-          <p>{{ article.content }}</p>
+          <p>{{ article.content.substring(0, 70) }}</p>
           <p class="text-end user-text">{{ article.user }}</p>
         </div>          
       </div>
@@ -82,6 +82,7 @@ export default {
       this.$router.push({name: 'Article'})
     },
     onLoad: function () {
+
       axios({
         url: `${this.$store.state.SERVER_URL}/community?page=1`,
         method: 'GET',

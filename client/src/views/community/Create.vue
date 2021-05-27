@@ -1,10 +1,10 @@
 <template>
   <div class="create">
-    <div class="mb-3">
-      <textarea name="" id="제목" cols="60" rows="1" v-model.trim="article.title" placeholder="제목:" style="resize: none;"></textarea>
+    <div class="my-5">
+      <textarea class="demo" name="" id="제목" cols="60" rows="1" v-model.trim="article.title" placeholder="제목을 입력하세요" style="resize: none;"></textarea>
     </div>
-    <textarea name="" id="" cols="60" rows="3" v-model.trim="article.content" placeholder="내용:" style="resize: none;"></textarea>
-    <p><button type="submit" class="btn btn-primary" @click="onSubmit()">작성</button></p>
+    <textarea class="demo" name="" id="" cols="60" rows="10" v-model.trim="article.content" placeholder="내용을 입력하세요" style="resize: none;"></textarea>
+    <p><button type="submit" class="btn btn-outline-secondary" @click="onSubmit()">작성</button></p>
   </div>
 </template>
 
@@ -16,8 +16,8 @@ export default {
   data: function () {
     return {
       article: {
-        title: null,
-        content: null,
+        title: '',
+        content: '',
       },
     }
   },
@@ -26,6 +26,16 @@ export default {
       const article = {
         title: this.article.title,
         content: this.article.content,
+      }
+      
+      if (article.title == '') {
+        alert('제목을 입력해 주세요.')
+        return
+      }
+
+      if (article.content == '' ) { 
+        alert('내용을 입력해 주세요.')
+        return
       }
       
       axios({
@@ -61,5 +71,8 @@ export default {
 </script>
 
 <style>
-
+.demo{
+  border: none;
+  border-bottom: 1px black solid;
+}
 </style>

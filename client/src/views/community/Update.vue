@@ -1,10 +1,14 @@
 <template>
-  <div class="update">
-    <div class="mb-3">
-      <textarea name="" id="제목" cols="60" rows="1" v-model.trim="article.title" placeholder="제목:"></textarea>
+  <div class="create">
+    <div class="my-5">
+      <textarea class="demo" name="" id="제목" cols="60" rows="1" v-model.trim="article.title" placeholder="제목을 입력하세요" style="resize: none;"></textarea>
     </div>
-    <textarea name="" id="" cols="60" rows="3" v-model.trim="article.content" placeholder="내용:"></textarea>
-    <p><button type="submit" class="btn btn-primary" @click="onUpdate">글 수정하기</button></p>
+    <textarea class="demo" name="" id="" cols="60" rows="10" v-model.trim="article.content" placeholder="내용을 입력하세요" style="resize: none;"></textarea>
+    <div>
+      <button type="submit" class="btn btn-outline-secondary" @click="$router.push({name: 'Article'})">취소</button>&nbsp;
+      <button type="submit" class="btn btn-outline-secondary" @click="onUpdate()">수정</button>
+      
+    </div>
   </div>
 </template>
 
@@ -50,5 +54,8 @@ export default {
 </script>
   
 <style>
-
+.demo{
+  border: none;
+  border-bottom: 1px black solid;
+}
 </style>
