@@ -1,10 +1,11 @@
 <template>
-  <div class="movieDetail p-3">
+  <div class="movieDetail p-2">
     <div class="movie">
+      <div class="d-flex justify-content-start">
+        <button class="btn btn-primary m-2" @click="$router.push({name: 'FrontPage'})">목록으로</button>
+      </div>
       <div class="movie-header">
-        <div class="d-flex justify-content-start">
-          <button class="btn btn-primary m-2" @click="$router.push({name: 'FrontPage'})">목록으로</button>
-        </div>
+        
         <div class="container">
           <div class="row align-items-center">
             <div class="col-6 my-3">
@@ -237,7 +238,7 @@ export default {
       }
       // 로그인 유무를 확인한다.
       if (!localStorage.getItem('jwt')) {
-        alert('로그인 해주세요.')
+        alert('로그인이 필요합니다.')
         this.$router.push({name: "Login"})
         return
       }

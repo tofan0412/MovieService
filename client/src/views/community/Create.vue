@@ -56,7 +56,8 @@ export default {
       })
       .then(resp => {
         console.log(resp)
-        this.$router.push({name: 'Community'})
+        this.$store.state.article = resp.data
+        this.$router.push({name: 'Article'})
       })
       .catch(err => {
         console.log(err)
