@@ -1,15 +1,27 @@
 <template>
   <div class="signup">
-    <label for="username">사용자 아이디</label>
-    <input type="text" name="username" id="username" v-model.trim="credentials.username">
-    <br>
-    <label for="password">비밀번호</label>
-    <input type="password" name="password" id="password" v-model.trim="credentials.password">
-    <br>
-    <label for="password">비밀번호 확인</label>
-    <input type="password" name="passwordConfirmation" id="passwordConfirmation" v-model.trim="credentials.passwordConfirmation">
-    <br>
-    <button @click="onSignup">회원가입</button>
+    <div class="card ">
+        <div>
+          <img class="img-responsive img" src="@/assets/images/SSAFYDB.png" alt="">
+        </div>
+
+        <div class="card-body">
+            <p><label for="username">사용자 아이디</label></p>
+          <input v-model.trim="credentials.username" placeholder="홍길동">
+          <br>
+        </div>
+        <div class="card-body">
+            <p><label for="password">비밀번호</label></p>
+          <input type='password' v-model.trim="credentials.password">
+          <br>
+        </div>     
+        <div class="card-body">
+            <p><label for="password">비밀번호 확인</label></p>
+          <input  type='password' v-model.trim="credentials.passwordConfirmation"> 
+          <br>
+        </div>
+    </div>
+    <button @click="onSignup" class="btn btn-outline-secondary mt-5">회원가입</button>   
   </div>
 </template>
 
@@ -65,5 +77,8 @@ export default {
 </script>
 
 <style>
-
+.img {
+  width:250px;
+  height:250px;
+}
 </style>
