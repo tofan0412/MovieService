@@ -7,21 +7,20 @@
       <div class="m-2"><h3>작성된 게시글이 존재하지 않습니다.</h3></div>
       <div class="m-2"><button class="btn btn-primary" @click="moveToCreate()">게시글 작성하기</button></div>
     </div>
-    <div 
+    <!-- <div 
       v-for="article in articles" 
       :key="article.id" 
       @click="onDetail(article)">
         {{ article.id }}
         {{ article.title }}
         {{ article.content }}
-    </div>
+    </div> -->
 
     <div class="overflow-auto">
       <b-table
         id="community_article"
         :items="articles"
         :per-page="perPage"
-        :current-page="currentPage"
         small
         @row-clicked="onDetail"
       ></b-table>
@@ -38,8 +37,6 @@
         last-text="⏭"
         class="mt-4"
       ></b-pagination>
-
-      <p class="mt-3">Current Page: {{ currentPage }}</p>
     </div>
 
 
@@ -56,8 +53,7 @@ export default {
   data: function () {
     return {
       articles: [],
-      perPage: 2,
-      currentPage: 1,    
+      perPage: 8,  
     }
   },
   methods: {

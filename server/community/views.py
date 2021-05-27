@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Article, Comment
 from .serializers import ArticleSerializer, CommentSerializer
+from django.http.response import HttpResponse
+from rest_framework import status
 
 
 @api_view(['GET'])
@@ -28,13 +30,21 @@ def articlelist_create(request):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def article_update_delete(request, article_pk): 
-    article = get_object_or_404(Article, pk=article_pk)
+    user = request.user
+    article = get_object_or_404(Article, pk=article_pk)    
+
+    if not (user.username == article.user_id):
+        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+
     if request.method=='PUT' : 
         serializer = ArticleSerializer(article, data=request.data)
         if serializer.is_valid(raise_exception=True): 
             serializer.save()
             return Response(serializer.data)
     else:
+        if user != article.user_id:
+            return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
         article.delete()
         return Response({'id':article_pk})
         
@@ -61,7 +71,15 @@ def comment_list_create(request, article_pk):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def comment_delete(request, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
+    user = request.user
+    comment = get_object_or_404(Comment, pk=comment_pk)    
+
+    if not (user.username == comment.user_id):
+        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+
+    if user != comment.user_id:
+        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+
     comment.delete()
     return Response({'id': comment_pk})
 

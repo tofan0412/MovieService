@@ -1,6 +1,5 @@
 <template>
   <div class="article">
-
     <div class="container">
     <div class="card">
         <div class="card-body">
@@ -15,57 +14,52 @@
         </div>   
     </div>
     <div class="row mt-3">
-      <!-- <div class="col-auto mr-auto"></div> -->
       <div class="col-auto">
-          <button @click="toUpdatePage"  class="btn btn-outline-secondary">게시글 수정</button>
+          <button type="button"
+            v-if="article.user === user_id"
+            @click="toUpdatePage"  
+            class="btn btn-outline-secondary">
+            게시글 수정
+          </button>
       </div>
       <div class="col-auto mb-5">
           <form>                
-              <button @click="onDelete"  class="btn btn-outline-secondary">게시글 삭제</button>
+              <button type="button"              
+                v-if="article.user === user_id"
+                @click="onDelete"  
+                class="btn btn-outline-secondary">
+                게시글 삭제
+              </button>
           </form>
       </div>
        </div>
     </div>
-
     <div class="mb-4">
         <h3 >댓글 작성</h3>
         <input name="comment" id="comment" v-model="comment_content"><button @click="commentSubmit" class="btn btn-outline-secondary">작성</button>        
     </div>
-
     <div class="container">
     <div class="card">
         <div class="card-body">
            <div v-for="comment in comments" :key="comment.id">
          <h6 align="start"> {{ comment.user }} : {{ comment.content }}
           생성시간: {{ comment.created_at }} 수정시간: {{ comment.updated_at }}
-          <button @click="onDelete_Comment(comment)" class="btn btn-outline-secondary">X</button></h6>
+          <button 
+            v-if="comment.user === user_id"
+            @click="onDelete_Comment(comment)" 
+            class="btn btn-outline-secondary">
+            X
+          </button></h6>
       </div>   
         </div> 
     </div>
     </div>
-
-
-
-<!-- 
-    <form class="mb-3">
-      <div class="mb-4">
-        <h3>댓글 작성</h3>
-        <input name="comment" id="comment" v-model="comment_content">
-        <button @click="commentSubmit" class="btn btn-outline-secondary">작성</button>
-      </div>
-
-      <div v-for="comment in comments" :key="comment.id">
-        <p>{{ comment.user }} : {{ comment.content }}
-        생성시간: {{ comment.created_at }} 수정시간: {{ comment.updated_at }}
-        <button @click="onDelete_Comment(comment)" class="btn btn-outline-secondary">X</button></p>
-      </div>
-    </form> -->
-    
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 
 export default {
   name: 'Article',
@@ -74,12 +68,27 @@ export default {
       article: this.$store.state.article,
       comments: [],
       comment_content: '',
+      user_id: '',
     }
   },
   created: function () {
     this.onLoad()
+    this.checkUser()
   },
   methods: {
+    checkUser: function () {
+      const token = localStorage.getItem('jwt')
+      // jwt 토큰이 존재하는 경우
+
+      if (token !== null) {
+        const decodedJWT = jwt_decode(token)
+        this.user_id = decodedJWT.user_id
+      } 
+      // jwt 토큰이 존재하지 않는 경우..
+      else {
+        this.user_id = ''
+      }
+    },
     // 게시글에 작성된 댓글 목록을 불러온다.
     onLoad: function () {
       axios({
@@ -148,9 +157,8 @@ export default {
       .catch(err => {
         console.log(err)
       })
-    }
-
-  },
+    },
+  }  
 }
 </script>
 

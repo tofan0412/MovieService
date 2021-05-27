@@ -43,23 +43,23 @@ def review_list(request, movie_pk):
     return Response(serializer.data)
 
 
-def trailer(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    input = movie.subtitle + 'trailer'
-    url = 'https://www.googleapis.com/youtube/v3/search'
-    params = {
-        'key': 'AIzaSyC4uHRgq7maECpf4WEkbDjKwhRc6G7Xlk8',
-        'part': 'snippet',
-        'type': 'video',
-        'maxResults': '1',        
-        'q': input
-    }
-    response = requests.get(url, params)
-    response_dic = response.json() # Json response이므로 딕셔너리 타입으로 변환
-    data = {
-        'YoutubeItem': response_dic['items']
-    }
-    return JsonResponse(data) #response를 커스터마이징 후에 전달하고 싶어서 사용
+# def trailer(request, movie_pk):
+#     movie = get_object_or_404(Movie, pk=movie_pk)
+#     input = movie.subtitle + 'trailer'
+#     url = 'https://www.googleapis.com/youtube/v3/search'
+#     params = {
+#         'key': 'AIzaSyC4uHRgq7maECpf4WEkbDjKwhRc6G7Xlk8',
+#         'part': 'snippet',
+#         'type': 'video',
+#         'maxResults': '1',        
+#         'q': input
+#     }
+#     response = requests.get(url, params)
+#     response_dic = response.json() # Json response이므로 딕셔너리 타입으로 변환
+#     data = {
+#         'YoutubeItem': response_dic['items']
+#     }
+#     return JsonResponse(data) #response를 커스터마이징 후에 전달하고 싶어서 사용
 
 
 @api_view(['POST'])
@@ -108,25 +108,25 @@ def review_update(request, review_pk):
         return Response(serializer.data)
 
 
-@authentication_classes([JSONWebTokenAuthentication]) 
-@permission_classes([IsAuthenticated]) 
-def like(request, movie_pk):
-    user = request.user
-    movie = get_object_or_404(Movie, pk=movie_pk)
+# @authentication_classes([JSONWebTokenAuthentication]) 
+# @permission_classes([IsAuthenticated]) 
+# def like(request, movie_pk):
+#     user = request.user
+#     movie = get_object_or_404(Movie, pk=movie_pk)
     
-    if movie.like_users.filter(pk=user.pk).exists(): #이미 좋아요했으면 취소
-        movie.like_users.remove(user)
-        liked = False  
-    else:
-        movie.like_users.add(user)
-        liked = True
+#     if movie.like_users.filter(pk=user.pk).exists(): #이미 좋아요했으면 취소
+#         movie.like_users.remove(user)
+#         liked = False  
+#     else:
+#         movie.like_users.add(user)
+#         liked = True
         
-    count = movie.like_users.count()
-    data = {
-        'liked': liked,
-        'count': count,
-    }
-    return JsonResponse(data)
+#     count = movie.like_users.count()
+#     data = {
+#         'liked': liked,
+#         'count': count,
+#     }
+#     return JsonResponse(data)
 
 
 @api_view(['POST'])
