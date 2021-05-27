@@ -1,5 +1,7 @@
+from django.core import paginator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
+from django.core.paginator import Paginator
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -11,9 +13,23 @@ from rest_framework import status
 
 @api_view(['GET'])
 def article_list(request):
-    articles = Article.objects.all()
+    articles = Article.objects.order_by('created_at').reverse()
+    paginator = Paginator(articles, 5)
+    page = request.GET.get('page')
+    articles = paginator.get_page(page)
+    
+    total_page = paginator.num_pages
+
     serializer= ArticleSerializer(articles, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getPage(request):
+    articles = Article.objects.all()
+    paginator = Paginator(articles, 5)
+    total_page = paginator.num_pages
+    return Response(total_page)
 
 
 @api_view(['POST'])
@@ -34,7 +50,7 @@ def article_update_delete(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)    
 
     if not (user.username == article.user_id):
-        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
+        return HttpResponse(status=status.HTTP_403_FORBIDDEN)
 
     if request.method=='PUT' : 
         serializer = ArticleSerializer(article, data=request.data)
@@ -42,9 +58,6 @@ def article_update_delete(request, article_pk):
             serializer.save()
             return Response(serializer.data)
     else:
-        if user != article.user:
-            return HttpResponse(status=status.HTTP_403_FORBIDDEN)
-
         article.delete()
         return Response({'id':article_pk})
         

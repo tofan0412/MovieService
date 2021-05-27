@@ -55,7 +55,7 @@
                 </p>
                 <h5>{{ rev.title }}</h5>
                 {{ rev.content }}
-                <p class="text-secondary">{{ rev.user_id }} | {{ rev.created_at }}</p>  
+                <p class="text-secondary">{{ rev.user_id }} | {{ rev.created_at.substring(0, 10) }}</p>  
               </div>
 
               <div class="col-3 d-flex justify-content-center align-items-center">
@@ -128,11 +128,10 @@
             <!-- <label for="reviewContent">내용</label> -->
             <textarea name="reviewContent" id="reviewContent" cols="75" rows="5" v-model="params.content" placeholder="내용:" style="resize: none;"></textarea>
             <br>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between px-2">
               <div>
                 <label for="reviewRank">별점</label>&nbsp;
                 <select v-model="params.rank">
-                  <option value="default">선택</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -140,7 +139,7 @@
                   <option value="5">5</option>
                 </select>
               </div>
-              <button @click="onSubmit" class="btn btn-primary">관람평 작성</button>
+              <button @click="onSubmit" class="btn btn-outline-secondary">관람평 작성</button>
             </div>
           </div>
         </div>
@@ -244,7 +243,7 @@ export default {
       }
 
       // 데이터 검증한다.
-      if (review.title.length === 0 || review.content.length === 0 || review.rank.length === 0 || review.rank === 'default') {
+      if (review.title.length === 0 || review.content.length === 0 || review.rank.length === 0) {
         alert('작성하지 않은 내용이 존재합니다. 확인해 주세요.')
         return
       }

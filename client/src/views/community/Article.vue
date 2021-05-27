@@ -1,16 +1,16 @@
 <template>
   <div class="article my-5">
-    <div class="container w-20">
+    <div class="container articleContainer">
 
       <div>
         <h2 class="text-start" align="start"><strong>{{ this.article.title }}</strong></h2>      
       </div>
       <!-- 작성자, 작성일, 최종 수정 시간.. -->
       <div class="row justify-content-start  align-items-center mt-5">
-        <div class="col-1 text-start username">
+        <div class="col-auto text-start username">
           {{ this.article.user }}
         </div>
-        <div class="col-3 text-start" style="color: lightslategray;">
+        <div class="col-auto text-start" style="color: lightslategray;">
           last update: {{ this.article.updated_at.substring(0, 10) }}
         </div>
       </div>
@@ -62,7 +62,7 @@
             <p>{{ comment.content }}</p>
             <p style="color: lightslategray; font-size: 0.8rem;">{{ comment.created_at.substring(0, 10) }}</p>
           </div>
-          <div class="col-3 commentDelBtn">
+          <div class="col-3 commentDelBtn text-end">
             <span style="color: mediumaquamarine; cursor: pointer;" v-if="comment.user === user_id" @click="onDelete_Comment()">
               삭제
             </span>
@@ -207,7 +207,7 @@ export default {
   color: dodgerblue;
   font-size: 25px;
 }
-.container {
+.articleContainer {
   width: 900px;
 }
 .commentDelBtn:hover{

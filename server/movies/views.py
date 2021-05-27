@@ -82,10 +82,7 @@ def review_delete(request, review_pk):
     # 본인이 아닌 사용자가 삭제하려고 하는 경우, 반환한다.
     review = get_object_or_404(Review, pk=review_pk)
     if not (user.username == review.user_id):
-        return HttpResponse(status=status.status.HTTP_401_UNAUTHORIZED)
-    
-    if user != review.user_id:
-        return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
+        return HttpResponse(status=status.HTTP_403_FORBIDDEN)
 
     review.delete()
     return Response({'id': review_pk})
