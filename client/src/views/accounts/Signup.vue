@@ -53,6 +53,7 @@ export default {
       .catch(err => {
         //  확인 비밀번호와 일치하지 않는 경우, 이 곳으로 오게 된다.
         console.log(err)
+        alert('비밀번호가 일치하지 않습니다.')
       })
     },
     authorization: function () {
