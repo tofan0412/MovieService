@@ -106,8 +106,7 @@
           </div>
           <div class="col-6 and youtube text-start p-3">
             <!-- 유튜브 영상 출력 부분 -->
-            <h3>트레일러 영상</h3>
-            <div class="video-container" >
+            <div class="video-container ps-3" >
               <iframe 
                 class="iframebox mb-3" 
                 v-if="teaser"
@@ -123,12 +122,12 @@
         <!-- 관람평 작성 부분 -->
         <div class="row">
           <div class="col-6">
-            <textarea name="" id="제목" cols="75" rows="1" v-model.trim="params.title" placeholder="제목:" style="resize: none;"></textarea>
+            <textarea name="" id="제목" cols="75" rows="1" v-model.trim="params.title" placeholder="제목을 입력해 주세요." style="resize: none;"></textarea>
             <br>
             <!-- <label for="reviewContent">내용</label> -->
-            <textarea name="reviewContent" id="reviewContent" cols="75" rows="5" v-model="params.content" placeholder="내용:" style="resize: none;"></textarea>
+            <textarea name="reviewContent" id="reviewContent" cols="75" rows="5" v-model="params.content" placeholder="내용을 입력해 주세요." style="resize: none;"></textarea>
             <br>
-            <div class="d-flex justify-content-between px-2">
+            <div class="d-flex justify-content-between px-5">
               <div>
                 <label for="reviewRank">별점</label>&nbsp;
                 <select v-model="params.rank">
@@ -201,7 +200,8 @@ export default {
       const input = this.movie.subtitle + 'trailer'
 
       const params = {
-        key: "AIzaSyB17QVL_fP8qY89CTsNQV1Dl3ZWHeRoCzc",
+        // key: "AIzaSyDmSSohkr__EQFkb2SfcYPiXUiAXAXh7JE",
+        key: "wefwefwefwfewf",
         part: 'snippet',
         type: 'video',
         q: input,
@@ -420,7 +420,7 @@ export default {
   display: block;
   border: none;
   height: 40vh;
-  width: 23vw;
+  width: 40vw;
 }
 .selectedReview{
   background-color: gray;

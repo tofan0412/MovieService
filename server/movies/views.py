@@ -16,7 +16,7 @@ import requests
 
 @api_view(['GET'])
 def index(request):
-    movies = Movie.objects.all()[:10]
+    movies = Movie.objects.all()
     paginator = Paginator(movies, 10)
     page_number = request.GET.get('page')
     

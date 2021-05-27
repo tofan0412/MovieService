@@ -73,7 +73,7 @@
 
     <!-- 댓글 작성창 부분 --> 
     <div class="row mt-3">
-      <textarea cols="70" rows="5" id="comment" v-model="comment_content" style="resize: none;" />
+      <textarea cols="70" rows="5" id="comment" v-model="comment_content" style="resize: none;" placeholder="저작권 등 다른 사람의 권리를 침해하거나 명예를 훼손하는 게시물은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다." />
     </div>
     <div class="row mt-2">      
       <button @click="commentSubmit()" class="btn btn-outline-secondary">작성</button>
@@ -155,11 +155,18 @@ export default {
       if (!localStorage.getItem('jwt')){
         alert('로그인이 필요합니다.')
         this.$router.push({name: 'Login'})
+        return
       }
 
       const comment = {
         content : this.comment_content,
       }
+
+      if (comment.content === ''){
+        alert('내용을 입력해 주세요.')
+        return
+      }
+
       axios({
         url: `${this.$store.state.SERVER_URL}/community/${this.$store.state.article.id}/comment_list_create/`,
         method: 'POST',
