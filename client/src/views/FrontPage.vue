@@ -25,7 +25,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-12 for-overview">
                     {{ movie.overview }}
                   </div>
                 </div>
@@ -172,5 +172,10 @@ export default {
 .recommendMovieImg:hover{
   transition: .3s ease;
   background-color: lightslategrey;
+}
+.for-overview{  
+  height: 117px;
+  width: 500px;
+  overflow: hidden
 }
 </style>
