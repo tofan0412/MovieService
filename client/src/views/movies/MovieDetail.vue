@@ -82,7 +82,7 @@
                         <select v-model="updateReview.rank">
                           <option value="default">선택</option>
                           <option value="1">1</option>
-                          <option value="2">2</option>
+                          <option value="2">2</option> 
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" @click="onUpdate()">수정하기</button>
+                      <button type="button" class="btn btn-primary" @click="onUpdate()" data-bs-dismiss="modal">수정하기</button>
                     </div>
                   </div>
                 </div>
@@ -269,7 +269,7 @@ export default {
       })
     },
     delReview: function (rev) {
-      const factor = confirm("관람객 평점을 삭제하시겠습니까?")
+      const factor = confirm("삭제하시겠습니까?")
       if (factor) {
         axios({
           method: 'DELETE',

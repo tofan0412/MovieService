@@ -1,21 +1,30 @@
 <template>
   <div class="recommend container">
     <h3>좋아하는 영화를 선택해 주세요.</h3>
-    <div class="row">
-      <div :id="'movie-'+ movie.id" 
-        class="card col-3" :class="{selected: movie.selected}"
+    <div class="row bg-dark">
+      <div 
+        class="card col-3 movie-card p-1" :class="{selected: movie.selected}"
         v-for="movie in movies" 
         :key="movie.id" 
         @click="onSelect(movie)"
       >
-        <img :src="movie.image" alt="" width="300px" height="500px">
-        <h5 class="card-title">{{ movie.title }}</h5>
+        <img :src="movie.image" alt="" height="450px">
+        <h5 class="card-title mt-3">{{ movie.title }}</h5>
       </div>
     </div>
     <div class="row fixed-bottom" >
       <button class="btn btn-primary" @click="onSubmit()">선택 완료</button>
     </div>
+
+    <div class="mySelectList">
+      <div class="d-flex align-items-center px-2" v-for="myMovie in myMoviesObj" :key="myMovie.id" @mousemove="mouseOver($event.target)" @mouseleave="mouseLeave($event.target)">
+        {{ myMovie.title }}
+        <hr>
+      </div>
+    </div>
   </div>
+
+  
 </template>
 
 <script>
@@ -27,6 +36,7 @@ export default {
     return {
       movies: [],
       myMovies: [],
+      myMoviesObj: [],
       isSelected: true,
     }
   },
@@ -36,11 +46,16 @@ export default {
 
       if (!this.myMovies.includes(movie.id)) {        
         this.myMovies.push(movie.id)
+        this.myMoviesObj.push(movie)
       }
       else if (this.myMovies.includes(movie.id)){
         const pos = this.myMovies.indexOf(movie.id)
+        const pos2 = this.myMoviesObj.indexOf(movie)
         if (pos !== -1) {
           this.myMovies.splice(pos, 1)  
+        }
+        if (pos2 !== -1) {
+          this.myMoviesObj.splice(pos2, 1)  
         }
       }
     },
@@ -67,6 +82,13 @@ export default {
         })
       }
     },
+    mouseOver: function (target) {
+      target.style = ['background-color: grey;', 'color: white;']
+    },
+    mouseLeave: function (target) {
+      target.style = ''
+    },
+
   },
   created: function () {
     axios({
@@ -90,5 +112,20 @@ export default {
 <style>
 .selected > *{
   opacity: 0.3;
+}
+.movie-card{
+  background-color: rgb(3, 37, 65);
+  border-radius: 0.45rem;
+  color: white;
+}
+.mySelectList{
+  border: 2px solid black;
+  border-radius: 0.45rem;
+  position: fixed;
+  left: 80%;
+  top: 35%;
+  overflow-y: scroll;
+  width: 10%;
+  height: 30%;
 }
 </style>

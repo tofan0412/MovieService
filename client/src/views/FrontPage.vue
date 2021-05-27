@@ -53,9 +53,9 @@
     </div> -->
     
     <h3 class="text-start">최신 영화</h3>
-    <div class="row my-3 justify-content-center bg-dark">
+    <div class="row my-3 bg-dark">
       
-      <div class="card col-3 movie-card p-1 mtext-white" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
+      <div class="card col-3 movie-card p-1" v-for="movie in movieList" :key="movie.id" @click="onDetail(movie)">
         <img :src="movie.image" alt="" height="450px">
         <h5 class="card-title mt-3">{{movie.title}}</h5>
         
